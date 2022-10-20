@@ -1,0 +1,127 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+select,
+textarea {
+    max-width: 600px;
+}
+
+textarea
+{
+/*    display:inline-block;
+*/    
+    resize:none;
+    border:none;
+}
+
+.background
+{
+    background-color:aquamarine;
+}
+
+.content {
+    background-color:white;
+    margin:10px 0px;
+}
+
+.ObjInput 
+{
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.JsonInfo
+{
+    border-bottom: 1px solid black;
+    height:1px;
+    margin:10px 5px;
+}
+
+.contentPlus
+{
+    display:flex;
+    justify-content:flex-start;
+    padding:0px;
+}
+
+.plus
+{
+    display:block;
+    width:30%;
+}
+.fileupload
+{
+  width:20%;
+  margin:0 10px;
+}
+
+.fileinput
+{
+    margin:0px;
+}
+
+
+#Result, .normal {
+    width: 50%;
+    height: 100%;
+    padding: 13px;
+}
+
+
+h1
+{
+    color:deeppink;
+    font-weight:700;
+}
+
+h2 {
+    color: deeppink;
+    font-weight: 700;
+}
+
+h3
+{
+    color:green;
+    font-weight:700;
+}
+
+p {
+    padding: 10px;
+    margin: 0px;
+    overflow-wrap:break-word;
+}
+
+pre
+{
+    display:inline-block;
+    width:100%;
+    margin:auto;
+    padding:10px;
+}
+
+
+span
+{
+    display:block;
+    font-size:1.5em;
+    color:green;
+    font-weight:700;
+    word-break:break-word;
+}

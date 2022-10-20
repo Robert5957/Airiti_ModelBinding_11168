@@ -1,0 +1,18 @@
+﻿body {
+  background-color:white
+}
+
+.textcontent {
+  font-size: 16px;
+  background-color: white;
+  padding: 3px;
+  overflow: hidden;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+.textlabel {
+  font-size: 16px;
+  background-color: inherit; 
+  padding: 5px;
+  font-weight:bolder
+}

@@ -1,0 +1,655 @@
+﻿@using ModelBinding_11115.Models;
+@{
+  ViewBag.Title = "Index";
+}
+
+
+<form method="post" action="/Default/SimpleBinding" id="SimpleBindingForm">
+  <input id="SimpleBindingSubmmit" type="submit" value="SimpleBinding" />  <br />
+  <div> 輸入(SimpleBinding)</div>
+  Name<input id="txtInPutName" name="Name" value="Siri"></>
+  Age<input id="txtInPutAge" name="Age" type="number" value="16"></><br />
+</form>
+<form method="post" action="/Default/ModelBindObj" id="ModelBindObjForm">
+  <input id="ModelBindObjSubmmit" type="submit" value="ModelBindObj" />  <br />
+  <div> 輸入(ModelBindObj)</div>
+  Name<input id="txtInPutMBName" name="Name" value="Siri"></>
+  Age<input id="txtInPutMBAge" name="Age" type="number" value="16"></><br />
+</form>
+<form method="post" action="/Default/SimpleModelBindArray" id="SimpleModelBindArrayForm">
+  @*<input id="SimpleModelBindArraySubmmit" type="submit" value="SimpleModelBindArray" />*@
+  <div>輸入(SimpleModelBindArray)</div>
+  Name<input id="StxtInPutName1" name="Name[0]" value="Siri"></>
+  Age<input id="StxtInPutAge1" name="Age[0]" type="number" value="12"></><br />
+  Name<input id="StxtInPutName2" name="Name[1]" value="Apple"></>
+  Age<input id="StxtInPutAge2" name="Age[1]" type="number" value="23"></><br />
+  Name<input id="StxtInPutName3" name="Name[2]" value="IOS"></>
+  Age<input id="StxtInPutAge3" name="Age[2]" type="number" value="34"></><br />
+</form>
+
+<form method="post" action="/Default/ModelBindingArray" id="Array">
+  @*<input id="ModelBindingArraySubmmit" type="submit" value="ModelBindingArray" />*@
+  <div>輸入(ModelBindingArray)</div>
+  Name<input id="MtxtInPutName1" name="data[0].Name" value="ASP"></>
+  Age<input id="MtxtInPutAge1" name="data[0].Age" type="number" value="12"></><br />
+  Name<input id="MtxtInPutName2" name="data[1].Name" value="Csharp"></>
+  Age<input id="MtxtInPutAge2" name="data[1].Age" type="number" value="23"></><br />
+  Name<input id="MtxtInPutName3" name="data[2].Name" value="Java"></>
+  Age<input id="MtxtInPutAge3" name="data[2].Age" type="number" value="34"></<br />
+</form>
+
+<form method="post" action="/Default/ModelBindingNestedObj" id="ModelBindingNestedObjForm">
+  @*<input id="ModelBindingNestedObjSubmmit" type="submit" value="ModelBindingNestedObj" />*@
+  <div>輸入(ModelBindingNestedObj)</div>
+  Name<input id="txtInPutNestName" name="Name" value="Vivy"></>
+  Age<input id="txtInPutNestAge" name="Age" type="number" value="1"></><br />
+  FName<input id="txtInPutFName1" name="Friends[0].Name" value="Lily"></>
+  FAge<input id="txtInPutFAge1" name="Friends[0].Age" type="number" value="2"></><br />
+  FFName<input id="txtInPutFFName1" name="Friends[0].Friends[0].Name" value="Envy"></>
+  FFAge<input id="txtInPutFFAge1" name="Friends[0].Friends[0].Age" type="number" value="3"></><br />
+  FName<input id="txtInPutFName2" name="Friends[1].Name" value="Ivy"></>
+  FAge<input id="txtInPutFAge2" name="Friends[1].Age" type="number" value="4"></><br />
+</form>
+
+<form method="post" action="/Default/ModelBindingArrayNestedObj" id="ArrayNestedObj">
+  @*<input id="ModelBindingArrayNestedObjSubmmit" type="submit" value="ModelBindingArrayNestedObj" />*@
+  <div>輸入(ModelBindingArrayNestedObj)</div>
+  1Name<input id="txtInPutName1" name="data[0].Name" value="Ann"></>
+  1Age<input id="txtInPutAge1" name="data[0].Age" type="number" value="1"></><br />
+  1F1Name<input id="txtInPut1F1Name" name="data[0].Friends[0].Name" value="Coco"></>
+  1F1Age<input id="txtInPut1F1Age" name="data[0].Friends[0].Age" type="number" value="2"></><br />
+  1F1F1Name<input id="txtInPut1F1F1Name" name="data[0].Friends[0].Friends[0].Name" value="David"></>
+  1F1F1Age<input id="txtInPut1F1F1Age" name="data[0].Friends[0].Friends[0].Age" type="number" value="3"></><br />
+  1F2Name<input id="txtInPut1F2Name" name="data[0].Friends[1].Name" value="Eve"></>
+  1F2Age<input id="txtInPut1F2Age" name="data[0].Friends[1].Age" type="number" value="4"></><br />
+  2Name<input id="txtInPutName2" name="data[1].Name" value="Bob"></>
+  2Age<input id="txtInPutAge2" name="data[1].Age" type="number" value="5"></><br />
+  2F1Name<input id="txtInPut2F1Name" name="data[1].Friends[0].Name" value="Frank"></>
+  2F1Age<input id="txtInPut2F1Age" name="data[1].Friends[0].Age" type="number" value="6"></><br />
+  2F1F1Name<input id="txtInPut2F1F1Name" name="data[1].Friends[0].Friends[0].Name" value="Gino"></>
+  2F1F1Age<input id="txtInPut2F1F1Age" name="data[1].Friends[0].Friends[0].Age" type="number" value="7"></><br />
+  2F2Name<input id="txtInPut2F2Name" name="data[1].Friends[1].Name" value="Hank"></>
+  2F2Age<input id="txtInPut2F2Age" name="data[1].Friends[1].Age" type="number" value="8"></><br />
+</form>
+
+<div style="float:left;">
+  輸入(PutinObj)
+<textarea id="txtPostBackReturnStatus" rows="5" cols="50"></textarea><br />
+</div>
+<div>
+  輸入(PutinObjJson)
+<textarea id="txtPostBackReturnJsonStatus" rows="5" cols="50"></textarea><br />
+</div>
+<div style="float:left;">
+  輸入的型別、processData(t/f)、資料
+<textarea id="txtBeforeSend" rows="5" cols="50"></textarea><br />
+</div>
+<div>
+  輸入型別、processData(t/f)、資料(Json)
+<textarea id="txtBeforeSendJson" rows="5" cols="50"></textarea><br />
+</div>
+<div style="float:left;">
+  返回(text)
+<textarea id="txtPostBack" rows="5" cols="50"></textarea><br />
+</div>
+<div>
+  返回(Jsontext)
+<textarea id="txtPostBackJson" rows="5" cols="50"></textarea><br />
+</div>
+<input id="SimpleBinding" type="button" value="SimpleBinding" />
+<input id="ModelBindObj" type="button" value="ModelBindObj" />
+<input id="SimpleModelBindArray" type="button" value="SimpleModelBindArray" />
+<input id="ModelBindingArray" type="button" value="ModelBindingArray" />
+<input id="ModelBindingNestedObj" type="button" value="ModelBindingNestedObj" />
+<input id="ModelBindingArrayNestedObj" type="button" value="ModelBindingArrayNestedObj" />
+
+@section scripts{
+  <script>
+    //#region Addtext
+    function AddJsontext(text) {               //    返回(Jsontext)
+      $('#txtPostBackJson').val(text);
+    }
+    function Addtext(text) {                   //      返回(text)
+      $('#txtPostBack').val(text);
+    }
+    function AddObjtext(text) {                   //   輸入(PutinObj)
+      $('#txtPostBackReturnStatus').val(text);
+    }
+    function AddJsonObjtext(text) {               //    輸入(PutinObjJson)
+      $('#txtPostBackReturnJsonStatus').val(text);
+    }
+    function AddJsonBeforeSendtext(text) {             //       輸入(BeforeSendJsontext)
+      $('#txtBeforeSendJson').val(text);
+    }
+    function AddBeforeSendtext(text) {             //            輸入(BeforeSendtext)
+      $('#txtBeforeSend').val(text);
+    }
+    //#endregion
+    //#region    Ajax
+    function AjaxJson(_url, _dataType, _sJson) {
+      $.ajax({
+        type: "POST",
+        url: _url,
+        dataType: _dataType,
+        contentType: 'application/json; charset=UTF-8',
+        //processData:false,
+        data: _sJson,
+        beforeSend: function (jqXHR, setting) {
+
+          return AddJsonBeforeSendtext(typeof (_sJson) + '          ' + setting.processData + '          ' + setting.data);
+
+
+        },
+        success: function (response) {
+          return AddJsontext(JSON.stringify(response))
+        },
+        error: function (err) {
+          return AddJsontext(err)
+        },
+        complete: function (XMLHttpRequest, textStatus) {
+          //return AddJsonStatustext(JSON.stringify(XMLHttpRequest))
+          return AddJsonObjtext(_sJson);
+        }
+      });
+    }
+    function AjaxForm(_url, _dataType, _sQuery) {
+      $.ajax({
+        type: "POST",
+        url: _url,
+        dataType: _dataType,
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        data: _sQuery,
+        beforeSend: function (jqXHR, setting) {
+
+          return AddBeforeSendtext(typeof (_sQuery) + '        ' + setting.processData + '          ' + setting.data);
+
+
+        },
+        success: function (response) {
+          return Addtext(JSON.stringify(response))
+        },
+        error: function (err) {
+          return Addtext(err)
+        },
+        complete: function (XMLHttpRequest, textStatus) {
+          //return AddStatustext(JSON.stringify(XMLHttpRequest))
+          return AddObjtext(_sQuery)
+        }
+      });
+    }
+    //#endregion
+    function jqdata(name, age, friends = null) {
+      this.name = name
+      this.age = age
+      this.Friends = friends || null
+    }
+    //#region SimpleBinding
+
+    $("#SimpleBinding").on("click", function () {
+      var sObj = {
+        Name: $("#txtInPutName").val(),
+        Age: $("#txtInPutAge").val()
+      };
+      var sObj2Array = $('#SimpleBindingForm').serializeArray();
+      var sObj3 = new jqdata($("#txtInPutName").val(), $("#txtInPutAge").val());
+      var sObj4 = { data: sObj };
+
+
+      var sJson = JSON.stringify(sObj);
+      var sQuery = $.param(sObj);
+      var sQuery2 = $.param(sObj2Array);
+      var sQuery3 = $('#SimpleBindingForm').serialize();
+      var sQuery4 = $.param(sObj3);
+
+      //1.   Name=Siri&Age=16與{"Name":"Siri","Age":"16"}
+      // AjaxJson("/Default/SimpleBinding", "text", sJson);     //成功
+      //AjaxForm("/Default/SimpleBinding", "text", sQuery);     //成功
+
+      //2.    [object Object] JSON.stringify後=>{"Name":"Siri","Age":"16"}
+      //AjaxJson("/Default/SimpleBinding", "text", sObj);      //失敗 500->json不可直接丟物件
+      //AjaxForm("/Default/SimpleBinding", "text", sObj);       //成功
+
+      //3.    [{"name":"Name","value":"Siri"},{"name":"Age","value":"16"}]
+      //AjaxJson("/Default/SimpleBinding", "text", JSON.stringify(sObj2Array));   //失敗 500  ->controller無法對應
+      // AjaxForm("/Default/SimpleBinding", "text", sObj2Array);      //成功
+
+      //4.    Name=Siri&Age=16(同1)
+      //AjaxJson("/Default/SimpleBinding", "text", JSON.stringify(sQuery2));    //失敗 500 ->param是轉化成querystring，不可丟
+      // AjaxForm("/Default/SimpleBinding", "text", sQuery2);      //成功
+
+      //5.   Name=Siri&Age=16 (同1)
+      //AjaxJson("/Default/SimpleBinding", "text", JSON.stringify(sQuery3));    //失敗 500 ->serialize是轉化成querystring，不可丟
+      //AjaxForm("/Default/SimpleBinding", "text", sQuery3);                    //成功
+
+      //6.   {"name":"Siri","age":"16","Friends":null}
+      AjaxJson("/Default/SimpleBinding", "text", JSON.stringify(sObj3));     //成功
+      AjaxForm("/Default/SimpleBinding", "text", sObj3);     //成功
+
+      //7.
+      //  AjaxJson("/Default/SimpleBinding", "text", JSON.stringify(sQuery4));       //失敗 500 ->param是轉化成querystring，不可丟
+      // AjaxForm("/Default/SimpleBinding", "text", sQuery4);                              //成功
+
+      //失敗
+      // AjaxJson("/Default/SimpleBinding", "text", JSON.stringify(sObj4));    //失敗
+      // AjaxForm("/Default/SimpleBinding", "text", sObj4);     //失敗
+    })
+    //#endregion
+    //#region ModelBindObj
+    $("#ModelBindObj").on("click", function () {
+      var sObj = {
+        Name: $("#txtInPutMBName").val(),
+        Age: $("#txtInPutMBAge").val()
+      };
+      var sObj2Array = $('#ModelBindObjForm').serializeArray();
+      var sObj2 = { data: sObj2Array };              //失敗
+      var sObj3 = new jqdata($("#txtInPutMBName").val(), $("#txtInPutMBAge").val())
+      var sObj4 = { data: sObj3 };
+
+      var sJson = JSON.stringify(sObj);
+      var sQuery = $.param(sObj);
+      var sQuery2 = $.param(sObj2Array);
+      var sQuery3 = $('#ModelBindObjForm').serialize();
+      var sQuery4 = $.param(sObj4);
+      var sQuery5 = decodeURIComponent(sQuery4);
+      var sQuery6 = $.param(sObj3);
+      var sQuery7 = $.param(sObj2);     //失敗
+
+      //1.       Name=Siri&Age=16與{"Name":"Siri","Age":"16"}
+      // AjaxJson("/Default/ModelBindObj", "json", sJson);             //成功
+      // AjaxForm("/Default/ModelBindObj", "json", sQuery);          //成功
+
+      //2.  [object Object]   =>{"Name":"Siri","Age":"16"}
+      //AjaxJson("/Default/ModelBindObj", "json", sObj);     //失敗 500->json不可直接丟物件
+      //AjaxForm("/Default/ModelBindObj", "json", sObj);               //成功
+
+      //3.   [{"name":"Name","value":"Siri"},{"name":"Age","value":"16"}]
+      //AjaxJson("/Default/ModelBindObj", "json", JSON.stringify(sObj2Array));    //失敗 500  ->controller無法對應
+      //AjaxForm("/Default/ModelBindObj", "json", sObj2Array);        //成功
+
+
+      //4.    [object Object]   =>  {"name":"Siri","age":"16","Friends":null}
+      //AjaxJson("/Default/ModelBindObj", "json", JSON.stringify(sObj3));    //成功
+      //AjaxForm("/Default/ModelBindObj", "json", sObj3);    //成功
+
+
+      //5.    Name=Siri&Age=16(同1)
+      //AjaxJson("/Default/ModelBindObj", "json", sQuery2);           //失敗 500 ->param是轉化成querystring，不可丟
+      //AjaxForm("/Default/ModelBindObj", "json", sQuery2);          //成功
+
+      //6.   Name=Siri&Age=16(同1)
+      //AjaxJson("/Default/ModelBindObj", "json", sQuery3);                   //失敗 500 ->serialize是轉化成querystring，不可丟
+      // AjaxForm("/Default/ModelBindObj", "json", sQuery3);          //成功
+
+      //7. [object Object]   =>{"data":{"name":"Siri","age":"16","Friends":null}}
+      AjaxJson("/Default/ModelBindObj", "json", JSON.stringify(sObj4));         //成功
+      AjaxForm("/Default/ModelBindObj", "json", sObj4);                 //成功
+
+      //8. data%5Bname%5D=Siri&data%5Bage%5D=16&data%5BFriends%5D=
+      //AjaxJson("/Default / ModelBindObj", "json", JSON.stringify(sQuery4));       //失敗 500 ->param是轉化成querystring，不可丟
+      //AjaxForm("/Default/ModelBindObj", "json", sQuery4);         //成功
+
+      //9.data[name]=Siri&data[age]=16&data[Friends]=            //(為8的解碼)
+      //AjaxJson("/Default / ModelBindObj", "json", JSON.stringify(sQuery5));       //失敗 500 ->是querystring，不可丟
+      //AjaxForm("/Default/ModelBindObj", "json", sQuery5);
+
+      //10.     name=Siri&age=16&Friends=                          //為4的param
+      //AjaxJson("/Default / ModelBindObj", "json", JSON.stringify(sQuery6));       //失敗 500 ->是querystring，不可丟
+      // AjaxForm("/Default/ModelBindObj", "json", sQuery6);
+
+      //失敗     {"data":[{"name":"Name","value":"Siri"},{"name":"Age","value":"16"}]}
+      //AjaxJson("/Default/ModelBindObj", "json", JSON.stringify(sObj2));    //失敗 500  ->controller無法對應
+      // AjaxForm("/Default/ModelBindObj", "json", sObj2);        //失敗 500  ->controller無法對應
+      //AjaxForm("/Default/ModelBindObj", "json", sQuery7)
+    })
+
+    //#endregion
+    //#region SimpleModelBindArray
+    $("#SimpleModelBindArray").on("click", function () {
+      var sObj = {
+        Name: [$("#StxtInPutName1").val(), $("#StxtInPutName2").val(), $("#StxtInPutName3").val()],
+        Age: [$("#StxtInPutAge1").val(), $("#StxtInPutAge2").val(), $("#StxtInPutAge3").val()]
+      };
+      var sObj2 = $("#SimpleModelBindArrayForm").serializeArray();
+      var sObj3 = new jqdata([$("#StxtInPutName1").val(), $("#StxtInPutName2").val(), $("#StxtInPutName3").val()], [$("#StxtInPutAge1").val(), $("#StxtInPutAge2").val(), $("#StxtInPutAge3").val()]);
+      var sObj4 = {
+        "Name[0]": $("#StxtInPutName1").val(),
+        "Age[0]": $("#StxtInPutAge1").val(),
+        "Name[1]": $("#StxtInPutName2").val(),
+        "Age[1]": $("#StxtInPutAge2").val(),
+        "Name[2]": $("#StxtInPutName3").val(),
+        "Age[2]": $("#StxtInPutAge3").val()
+      };
+      var sObj5 = {                                                     //失敗
+        Name: $("#StxtInPutName1").val(),
+        Age: $("#StxtInPutAge1").val(),
+        Name: $("#StxtInPutName2").val(),
+        Age: $("#StxtInPutAge2").val(),
+        Name: $("#StxtInPutName3").val(),
+        Age: $("#StxtInPutAge3").val()
+      };
+
+
+
+      var sJson = JSON.stringify(sObj);
+      var sQuery = $.param(sObj, true);
+      var sQuery2 = $.param(sObj, false);
+      var sQuery3 = decodeURIComponent(sQuery2);
+      var sQuery4 = $.param(sObj2);
+      var sQuery5 = decodeURIComponent(sQuery4);
+      var sQuery6 = $("#SimpleModelBindArrayForm").serialize();
+      var sQuery7 = decodeURIComponent(sQuery6);
+      var sQuery8 = $.param(sObj3);
+      var sQuery13 = $.param(sObj3, true);
+      var sQuery9 = decodeURIComponent(sQuery8);
+      var sQuery10 = $.param(sObj4);
+      var sQuery11 = decodeURIComponent(sQuery10);
+      var sQuery12 = $.param(sObj5);           //失敗
+
+
+      //1       Name=Siri&Name=Apple&Name=IOS&Age=12&Age=23&Age=34與  {"Name":["Siri","Apple","IOS"],"Age":["12","23","34"]}
+      //AjaxJson("/Default/SimpleModelBindArray", "text", sJson);
+      //AjaxForm("/Default/SimpleModelBindArray", "text", sQuery);
+
+      //2.     [object Object]   => [{"name":"Name[0]","value":"Siri"},{"name":"Age[0]","value":"12"},{"name":"Name[1]","value":"Apple"},{"name":"Age[1]","value":"23"},{"name":"Name[2]","value":"IOS"},{"name":"Age[2]","value":"34"}]
+      //AjaxJson("/Default/SimpleModelBindArray", "text", JSON.stringify(sObj2));     //失敗 500  ->controller無法對應
+      //AjaxForm("/Default/SimpleModelBindArray", "text", sObj2);                //成功
+      //3            Name%5B%5D=Siri&Name%5B%5D=Apple&Name%5B%5D=IOS&Age%5B%5D=12&Age%5B%5D=23&Age%5B%5D=34
+      // AjaxForm("/Default/SimpleModelBindArray", "text", sQuery2);
+
+      //4    Name[]=Siri&Name[]=Apple&Name[]=IOS&Age[]=12&Age[]=23&Age[]=34
+      //AjaxForm("/Default/SimpleModelBindArray", "text", sQuery3);   //成功
+
+      //5      Name%5B0%5D=Siri&Age%5B0%5D=12&Name%5B1%5D=Apple&Age%5B1%5D=23&Name%5B2%5D=IOS&Age%5B2%5D=34
+      // AjaxForm("/Default/SimpleModelBindArray", "text", sQuery4);                              //成功
+
+      //6.Name[0] = Siri & Age[0]=12 & Name[1]=Apple & Age[1]=23 & Name[2]=IOS & Age[2]=34
+      //AjaxForm("/Default/SimpleModelBindArray", "text", sQuery5);                    //成功
+
+      //7.同5
+      //AjaxForm("/Default/SimpleModelBindArray", "text", sQuery6);             //成功
+
+      //8.  同6
+      //  AjaxForm("/Default/SimpleModelBindArray", "text", sQuery7);      //成功
+
+      //9.
+      //AjaxJson("/Default/SimpleModelBindArray", "text", JSON.stringify(sObj3));        //失敗 500  ->controller無法對應
+      // AjaxForm("/Default/SimpleModelBindArray", "text", sObj3);                              //成功
+
+      //10.
+      // AjaxForm("/Default/SimpleModelBindArray", "text", sQuery8);        //成功
+
+      //11.
+      // AjaxForm("/Default/SimpleModelBindArray", "text", sQuery9);           //成功
+
+      //12
+      AjaxJson("/Default/SimpleModelBindArray", "text", JSON.stringify(sObj4));       //成功
+      AjaxForm("/Default/SimpleModelBindArray", "text", sObj4);                      //成功
+
+      //13
+      //AjaxForm("/Default/SimpleModelBindArray", "text", sQuery10);
+
+      //14
+      //AjaxForm("/Default/SimpleModelBindArray", "text", sQuery11);
+      //15
+      // AjaxForm("/Default/SimpleModelBindArray", "text", sQuery13);
+
+
+
+      //失敗
+      //AjaxJson("/Default/SimpleModelBindArray", "text", JSON.stringify(sObj5));       //失敗       只能抓到最後一個
+      //AjaxForm("/Default/SimpleModelBindArray", "text", sObj5);              //失敗        只能抓到最後一個
+      //AjaxForm("/Default/SimpleModelBindArray", "text", sQuery12);     //失敗        只能抓到最後一個
+    })
+
+    //#endregion
+    //#region ModelBindingArray
+
+    $("#ModelBindingArray").on("click", function () {
+      var sObj = [{ Name: $("#MtxtInPutName1").val(), Age: $("#MtxtInPutAge1").val() },
+      { Name: $("#MtxtInPutName2").val(), Age: $("#MtxtInPutAge2").val() },
+      { Name: $("#MtxtInPutName3").val(), Age: $("#MtxtInPutAge3").val() }]
+
+      var sObj2 = { data: sObj };
+      var sObj3 = [new jqdata($("#MtxtInPutName1").val(), $("#MtxtInPutAge1").val()), new jqdata($("#MtxtInPutName2").val(), $("#MtxtInPutAge2").val()), new jqdata($("#MtxtInPutName3").val(), $("#MtxtInPutAge3").val())]
+      var sObj4 = { data: sObj3 };
+      var sObj5 = $('#Array').serializeArray();
+      var sObj6 = {
+        "[0]":
+          { Name: $("#MtxtInPutName1").val(), Age: $("#MtxtInPutAge1").val() },
+        "[1]":
+          { Name: $("#MtxtInPutName2").val(), Age: $("#MtxtInPutAge2").val() },
+        "[2]":
+          { Name: $("#MtxtInPutName3").val(), Age: $("#MtxtInPutAge3").val() }
+      };
+      var sObj7 = {
+        data: {
+          "0":
+            { Name: $("#MtxtInPutName1").val(), Age: $("#MtxtInPutAge1").val() },
+          "1":
+            { Name: $("#MtxtInPutName2").val(), Age: $("#MtxtInPutAge2").val() },
+          "2":
+            { Name: $("#MtxtInPutName3").val(), Age: $("#MtxtInPutAge3").val() }
+        }
+      };
+
+      var sJson = JSON.stringify(sObj);
+      var sQuery = $.param($('#Array').serializeArray());
+      var sQuery2 = $.param(sObj2);
+
+      var sQuery3 = $.param(sObj3);         //失敗
+
+      var sQuery4 = $.param(sObj4);
+
+      var sQuery5 = decodeURIComponent(sQuery2);
+      var sQuery6 = decodeURIComponent(sQuery4);
+      var sQuery7 = $.param(sObj5);
+      var sQuery8 = decodeURIComponent(sQuery7);
+      var sQuery9 = $.param(sObj6);
+      var sQuery10 = decodeURIComponent(sQuery9);
+      var sQuery11 = $.param(sObj7);
+      var sQuery12 = decodeURIComponent(sQuery11);
+      //1
+      AjaxJson("/Default/ModelBindingArray", "json", sJson);
+      AjaxForm("/Default/ModelBindingArray", "json", sQuery);
+
+      //AjaxForm("/Default/ModelBindingArray", "json", sObj);
+      //2
+      // AjaxJson("/Default/ModelBindingArray", "json",JSON.stringify(sObj2));
+      //AjaxForm("/Default/ModelBindingArray", "json", sObj2);
+      //3
+     // AjaxJson("/Default/ModelBindingArray", "json", JSON.stringify(sObj3)); //成功
+     // AjaxForm("/Default/ModelBindingArray", "json",  sObj3);                //失敗
+      //4
+      //AjaxJson("/Default/ModelBindingArray", "json", JSON.stringify(sObj4));
+      //AjaxForm("/Default/ModelBindingArray", "json", sObj4);
+
+      //5
+       //AjaxJson("/Default/ModelBindingArray", "json", JSON.stringify(sObj5));
+      //AjaxForm("/Default/ModelBindingArray", "json", sObj5);
+
+
+      //AjaxForm("/Default/ModelBindingArray", "json", sQuery2);
+      //AjaxForm("/Default/ModelBindingArray", "json", sQuery5);
+
+      // AjaxForm("/Default/ModelBindingArray", "json", sQuery3);          //失敗
+      //AjaxForm("/Default/ModelBindingArray", "json", sQuery4);
+      //AjaxForm("/Default/ModelBindingArray", "json", sQuery6);
+      //AjaxForm("/Default/ModelBindingArray", "json", sQuery7);
+      //AjaxForm("/Default/ModelBindingArray", "json", sQuery8);
+
+       //AjaxJson("/Default/ModelBindingArray", "json",JSON.stringify(sObj6));
+      // AjaxForm("/Default/ModelBindingArray", "json", sObj6);
+      // AjaxForm("/Default/ModelBindingArray", "json", sQuery9);
+      //AjaxForm("/Default/ModelBindingArray", "json", sQuery10);
+
+  // AjaxJson("/Default/ModelBindingArray", "json", JSON.stringify(sObj7));         //失敗
+   //   AjaxForm("/Default/ModelBindingArray", "json", sObj7);
+  //AjaxForm("/Default/ModelBindingArray", "json", sQuery12);
+    })
+
+    //#endregion
+    //#region ModelBindingNestedObj
+
+    $("#ModelBindingNestedObj").on("click", function () {
+      var sObj = {
+        Name: $("#txtInPutNestName").val(),
+        Age: $("#txtInPutNestAge").val(),
+        Friends: [{
+          Name: $("#txtInPutFName1").val(),
+          Age: $("#txtInPutFAge1").val(),
+          Friends: [{
+            Name: $("#txtInPutFFName1").val(),
+            Age: $("#txtInPutFFAge1").val()
+          }]
+        }, {
+          Name: $("#txtInPutFName2").val(),
+          Age: $("#txtInPutFAge2").val()
+        }]
+      };
+      var sObj2 = { data: sObj };
+      var sObj3 = new jqdata
+        ($("#txtInPutNestName").val(), $("#txtInPutNestAge").val(), [
+          new jqdata($("#txtInPutFName1").val(), $("#txtInPutFAge1").val(),
+            [new jqdata($("#txtInPutFFName1").val(), $("#txtInPutFFAge1").val())]),
+          new jqdata($("#txtInPutFName2").val(), $("#txtInPutFAge2").val())]);
+      var sObj4 = { data: sObj3 };
+
+      var sObj5 = $('#ModelBindingNestedObjForm').serializeArray();
+
+      var sJson = JSON.stringify(sObj);
+      var sQuery = $.param(sObj);
+      var sQuery6 = decodeURIComponent($.param(sObj));
+      var sQuery2 = $.param(sObj2);
+      var sQuery3 = decodeURIComponent($.param(sObj2));
+      var sQuery4 = $.param(sObj3);
+      var sQuery5 = decodeURIComponent($.param(sObj3));
+      var sQuery7 = $.param(sObj4);
+      var sQuery8 = decodeURIComponent($.param(sObj4));
+      var sQuery9 = $.param(sObj5);
+      var sQuery10 = decodeURIComponent($.param(sObj5));
+      //1.
+      //AjaxJson("/Default/ModelBindingNestedObj", "json", sJson);
+      // AjaxForm("/Default/ModelBindingNestedObj", "json", sQuery);
+
+      //2.
+      AjaxJson("/Default/ModelBindingNestedObj", "json", sJson);
+      AjaxForm("/Default/ModelBindingNestedObj", "json", sObj);
+
+      //3.
+      //  AjaxJson("/Default/ModelBindingNestedObj", "json", JSON.stringify(sObj2));
+      // AjaxForm("/Default/ModelBindingNestedObj", "json", sObj2);
+      //4
+      //AjaxJson("/Default/ModelBindingNestedObj", "json", JSON.stringify(sObj3));
+      //AjaxForm("/Default/ModelBindingNestedObj", "json", sObj3);
+      //5
+      //AjaxJson("/Default/ModelBindingNestedObj", "json", JSON.stringify(sObj4));
+      // AjaxForm("/Default/ModelBindingNestedObj", "json", sObj4);
+
+      //6
+      // AjaxJson("/Default/ModelBindingNestedObj", "json", JSON.stringify(sObj5));      // 失敗
+      //AjaxForm("/Default/ModelBindingNestedObj", "json", sObj5);
+
+
+      //     AjaxForm("/Default/ModelBindingNestedObj", "json", sQuery2);
+      //AjaxForm("/Default/ModelBindingNestedObj", "json", sQuery3);
+      //AjaxForm("/Default/ModelBindingNestedObj", "json", sQuery4);
+      // AjaxForm("/Default/ModelBindingNestedObj", "json", sQuery5);
+      // AjaxForm("/Default/ModelBindingNestedObj", "json", sQuery6);
+      // AjaxForm("/Default/ModelBindingNestedObj", "json", sQuery7 );
+      //  AjaxForm("/Default/ModelBindingNestedObj", "json", sQuery8);
+      //    AjaxForm("/Default/ModelBindingNestedObj", "json", sQuery9);
+      //AjaxForm("/Default/ModelBindingNestedObj", "json", sQuery10);
+    })
+    //#endregion
+    //#region ModelBindingArrayNestedObj
+    $("#ModelBindingArrayNestedObj").on("click", function () {
+      var sObj = [{
+        Name: $("#txtInPutName1").val(),
+        Age: $("#txtInPutAge1").val(),
+        Friends: [{
+          Name: $("#txtInPut1F1Name").val(),
+          Age: $("#txtInPut1F1Age").val(),
+          Friends: [{
+            Name: $("#txtInPut1F1F1Name").val(),
+            Age: $("#txtInPut1F1F1Age").val()
+          }]
+        }, {
+          Name: $("#txtInPut1F2Name").val(),
+          Age: $("#txtInPut1F2Age").val()
+        }]
+      },
+      {
+        Name: $("#txtInPutName2").val(),
+        Age: $("#txtInPutAge2").val(),
+        Friends: [{
+          Name: $("#txtInPut2F1Name").val(),
+          Age: $("#txtInPut2F1Age").val(),
+          Friends: [{
+            Name: $("#txtInPut2F1F1Name").val(),
+            Age: $("#txtInPut2F1F1Age").val()
+          }]
+        }, {
+          Name: $("#txtInPut2F2Name").val(),
+          Age: $("#txtInPut2F2Age").val()
+        }]
+      }]
+
+      var sObj2 = { data: sObj };
+      var sObj3 = $('#ArrayNestedObj').serializeArray();
+      var sObj4 = {             //失敗 第二層無法成功modelbinding
+        "[0]":
+        {
+          Name: $("#txtInPutName1").val(), Age: $("#txtInPutAge1").val(),
+          "Friends[0]":
+          {
+            Name: $("#txtInPut1F1Name").val(), Age: $("#txtInPut1F1Age").val(),
+
+            "Friends[0]": { Name: $("#txtInPut1F1F1Name").val(), Age: $("#txtInPut1F1F1Age").val() }
+          },
+          "Friends[1]": {
+            Name: $("#txtInPut1F2Name").val(), Age: $("#txtInPut1F2Age").val()
+          }
+        },
+        "[1]":
+        {
+          Name: $("#txtInPutName2").val(), Age: $("#txtInPutAge2").val(),
+          "Friends[0]":
+          {
+            Name: $("#txtInPut2F1Name").val(), Age: $("#txtInPut2F1Age").val(),
+
+            "Friends[0]": { Name: $("#txtInPut2F1F1Name").val(), Age: $("#txtInPut2F1F1Age").val() }
+          },
+          "Friends[1]": {
+            Name: $("#txtInPut2F2Name").val(), Age: $("#txtInPut2F2Age").val()
+          }
+        }
+      }
+      var sJson = JSON.stringify(sObj);
+      var sQuery = $.param($('#ArrayNestedObj').serializeArray());
+      var sQuery2 = decodeURIComponent(sQuery);
+      var sQuery3 = $.param(sObj2);
+      var sQuery4 = decodeURIComponent(sQuery3);
+      var sQuery5 = $.param(sObj4);
+      var sQuery6 = decodeURIComponent(sQuery5);
+      AjaxJson("/Default/ModelBindingArrayNestedObj", "json", sJson);
+      AjaxForm("/Default/ModelBindingArrayNestedObj", "json", sQuery);
+
+
+      //AjaxJson("/Default/ModelBindingArrayNestedObj", "json", sJson);
+      //AjaxForm("/Default/ModelBindingArrayNestedObj", "json", sObj);     //失敗
+      //AjaxJson("/Default/ModelBindingArrayNestedObj", "json", JSON.stringify(sObj2));
+      //AjaxForm("/Default/ModelBindingArrayNestedObj", "json", sObj2);
+      //AjaxJson("/Default/ModelBindingArrayNestedObj", "json", JSON.stringify(sObj3));
+      // AjaxForm("/Default/ModelBindingArrayNestedObj", "json", sObj3);
+      //AjaxForm("/Default/ModelBindingArrayNestedObj", "json", sQuery2);
+      //AjaxForm("/Default/ModelBindingArrayNestedObj", "json", sQuery3);
+      //AjaxForm("/Default/ModelBindingArrayNestedObj", "json", sQuery4);
+
+      AjaxJson("/Default/ModelBindingArrayNestedObj", "json", JSON.stringify(sObj4));     
+     AjaxForm("/Default/ModelBindingArrayNestedObj", "json", sObj4);      
+      // AjaxForm("/Default/ModelBindingArrayNestedObj", "json", sQuery5);
+      AjaxForm("/Default/ModelBindingArrayNestedObj", "json", sQuery6);
+    })
+                                          //#endregion
+  </script>
+}

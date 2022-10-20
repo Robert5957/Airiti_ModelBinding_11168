@@ -1,0 +1,60 @@
+﻿@using ModelBinding_11115.Models;
+@model ModelBinding_11115.Models;
+
+<h2>SimpleBinding</h2>
+
+<div class="text-center">
+  <form method="post" action="/Default/SimpleBinding" id="SimpleBindingForm">
+    <div> 表單值(SimpleBinding)</div>
+    Name<input id="txtInPutName" name="Name" value=@Model.Name></>
+    Age<input id="txtInPutAge" name="Age" type="number" value="16"></><br />
+  </form>
+  <div id="result"></div>
+</div>
+@section Scripts{
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.10.3/beautify.js"></script>
+  <script src="~/Content/site.js"></script>
+  <script>
+    $(function () {
+
+      //jQuery 的 Ajax，若指定dataType，Server Response的資料必須為該型別，否則回報轉型失敗
+      //只要與Action的參數對應，只有一種可能性，就不用指名
+      //只有在Action的Array、List參數內是簡單型別，免加索引
+
+      let action_SimpleBinding = { tag: "(string Name, int Age)", url: "/Default/SimpleBinding", dataType: "text", contentType: appUrlencoded };                                
+
+      //#region 簡單型別繫結
+      var sObj1 = {
+        "Name": $('#txtInPutName').val(),
+        "Age": $('#txtInPutAge').val(),
+      };                                       
+      var sObj2 = new jqdata($("#txtInPutName").val(), $("#txtInPutAge").val());
+      var sObjArray1 = $('#SimpleBindingForm').serializeArray();
+    
+      var sQuery1 = $.param(sObj1);   
+      var sQuery2 = $.param(sObj2);
+    
+      let simpleBinding = factory(action_SimpleBinding);
+      
+      simpleBinding.ajax(sObj1);         
+      simpleBinding.ajax(sQuery1);
+      simpleBinding.ajax(sObjArray1);   
+      simpleBinding.ajax(sObj2);
+      simpleBinding.ajax(sQuery2);
+      
+      simpleBinding.contentType = appJson;
+      simpleBinding.ajax(sObj1);
+     // simpleBinding.ajax(sObj2Array);     // 失敗
+      simpleBinding.ajax(sObj2);
+
+      //#endregion
+
+
+    });
+
+  
+
+
+
+  </script>
+}

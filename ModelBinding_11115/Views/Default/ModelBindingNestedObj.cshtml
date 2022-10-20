@@ -1,0 +1,95 @@
+﻿@using ModelBinding_11115.Models;
+
+
+<h2>ModelBindingNestedObj</h2>
+
+<div class="text-center">
+  <form method="post" action="/Default/ModelBindingNestedObj" id="ModelBindingNestedObjForm">
+    <div>表單值(ModelBindingNestedObj)</div>
+    本人Name<input id="txtInPutNestName" name="Name" value="Vivy"></>
+    本人Age<input id="txtInPutNestAge" name="Age" type="number" value="1"></><br />
+    第1個朋友Name<input id="txtInPutFName1" name="Friends[0].Name" value="Lily"></>
+    第1個朋友Age<input id="txtInPutFAge1" name="Friends[0].Age" type="number" value="2"></><br />
+    第1個朋友的朋友Name<input id="txtInPutFFName1" name="Friends[0].Friends[0].Name" value="Envy"></>
+    第1個朋友的朋友Age<input id="txtInPutFFAge1" name="Friends[0].Friends[0].Age" type="number" value="3"></><br />
+    第2個朋友Name<input id="txtInPutFName2" name="Friends[1].Name" value="Ivy"></>
+    第2個朋友Age<input id="txtInPutFAge2" name="Friends[1].Age" type="number" value="4"></><br />
+  </form>
+  <div id="result"></div>
+</div>
+@section Scripts{
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.10.3/beautify.js"></script>
+  <script src="~/Content/site.js"></script>
+  <script>
+    $(function () {
+
+      //jQuery 的 Ajax，若指定dataType，Server Response的資料必須為該型別，否則回報轉型失敗
+      //只要與Action的參數對應，只有一種可能性，就不用指名
+      //只有在Action的Array、List參數內是簡單型別，免加索引
+
+
+      let action_ModelBindingNestedObj = { tag: "(Person data)", url: "/Default/ModelBindingNestedObj", dataType: "json", contentType: appUrlencoded };
+
+
+      //#region 複雜巢狀型別繫結
+      let modelBindingNestedObj = factory(action_ModelBindingNestedObj);
+      var sObj1 = {
+        Name: $("#txtInPutNestName").val(),
+        Age: $("#txtInPutNestAge").val(),
+        Friends: [{
+          Name: $("#txtInPutFName1").val(),
+          Age: $("#txtInPutFAge1").val(),
+          Friends: [{
+            Name: $("#txtInPutFFName1").val(),
+            Age: $("#txtInPutFFAge1").val()
+          }]
+        }, {
+          Name: $("#txtInPutFName2").val(),
+          Age: $("#txtInPutFAge2").val()
+        }]
+      };
+      var sObj2 = { data: sObj1 };
+      var sObj3 = new jqdata
+        ($("#txtInPutNestName").val(), $("#txtInPutNestAge").val(), [
+          new jqdata($("#txtInPutFName1").val(), $("#txtInPutFAge1").val(),
+            [new jqdata($("#txtInPutFFName1").val(), $("#txtInPutFFAge1").val())]),
+          new jqdata($("#txtInPutFName2").val(), $("#txtInPutFAge2").val())]);
+      var sObj4 = { data: sObj3 };
+    
+
+
+      var sObjArray1 = $('#ModelBindingNestedObjForm').serializeArray();
+
+      var sQuery1 = $.param(sObj1);
+      var sQuery2 = $.param(sObj2);
+      var sQuery3 = $.param(sObj3);
+      var sQuery4 = $.param(sObj4);
+    
+
+      modelBindingNestedObj.ajax(sObj1);
+      modelBindingNestedObj.ajax(sObj2);
+      modelBindingNestedObj.ajax(sObj3);
+      modelBindingNestedObj.ajax(sObj4);
+
+      modelBindingNestedObj.ajax(sObjArray1);
+      modelBindingNestedObj.ajax(sQuery1);
+      modelBindingNestedObj.ajax(sQuery2);
+      modelBindingNestedObj.ajax(sQuery3);
+      modelBindingNestedObj.ajax(sQuery4);
+
+      modelBindingNestedObj.contentType = appJson;
+
+   
+      modelBindingNestedObj.ajax(sObj1);
+      modelBindingNestedObj.ajax(sObj2);
+      modelBindingNestedObj.ajax(sObj3);
+      modelBindingNestedObj.ajax(sObj4);
+
+
+      //#endregion
+
+
+    });
+
+  </script>
+}

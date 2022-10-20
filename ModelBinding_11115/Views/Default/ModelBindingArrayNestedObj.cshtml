@@ -1,0 +1,146 @@
+﻿@using ModelBinding_11115.Models;
+
+
+<h2>ModelBindingArrayNestedObj</h2>
+
+<div class="text-center">
+  <form method="post" action="/Default/ModelBindingArrayNestedObj" id="ArrayNestedObj">
+    @*<input id="ModelBindingArrayNestedObjSubmmit" type="submit" value="ModelBindingArrayNestedObj" />*@
+    <div>輸入(ModelBindingArrayNestedObj)</div>
+    1本人Name<input id="txtInPutName1" name="data[0].Name" value="Ann"></>
+    1本人Age<input id="txtInPutAge1" name="data[0].Age" type="number" value="1"></><br />
+    1本人 第1個朋友Name<input id="txtInPut1F1Name" name="data[0].Friends[0].Name" value="Coco"></>
+    1本人 第1個朋友Age<input id="txtInPut1F1Age" name="data[0].Friends[0].Age" type="number" value="2"></><br />
+    1本人 第1個朋友的朋友Name<input id="txtInPut1F1F1Name" name="data[0].Friends[0].Friends[0].Name" value="David"></>
+    1本人 第1個朋友的朋友Age<input id="txtInPut1F1F1Age" name="data[0].Friends[0].Friends[0].Age" type="number" value="3"></><br />
+    1本人 第2個朋友Name<input id="txtInPut1F2Name" name="data[0].Friends[1].Name" value="Eve"></>
+    1本人 第2個朋友Age<input id="txtInPut1F2Age" name="data[0].Friends[1].Age" type="number" value="4"></><br />
+    2本人Name<input id="txtInPutName2" name="data[1].Name" value="Bob"></>
+    2本人Age<input id="txtInPutAge2" name="data[1].Age" type="number" value="5"></><br />
+    2本人 第1個朋友Name<input id="txtInPut2F1Name" name="data[1].Friends[0].Name" value="Frank"></>
+    2本人 第1個朋友Age<input id="txtInPut2F1Age" name="data[1].Friends[0].Age" type="number" value="6"></><br />
+    2本人 第1個朋友的朋友Name<input id="txtInPut2F1F1Name" name="data[1].Friends[0].Friends[0].Name" value="Gino"></>
+    2本人 第1個朋友的朋友Age<input id="txtInPut2F1F1Age" name="data[1].Friends[0].Friends[0].Age" type="number" value="7"></><br />
+    2本人 第2個朋友Name<input id="txtInPut2F2Name" name="data[1].Friends[1].Name" value="Hank"></>
+    2本人 第2個朋友Age<input id="txtInPut2F2Age" name="data[1].Friends[1].Age" type="number" value="8"></><br />
+  </form>
+  <div id="result"></div>
+</div>
+@section Scripts{
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.10.3/beautify.js"></script>
+  <script src="~/Content/site.js"></script>
+  <script>
+    $(function () {
+
+      //jQuery 的 Ajax，若指定dataType，Server Response的資料必須為該型別，否則回報轉型失敗
+      //只要與Action的參數對應，只有一種可能性，就不用指名
+      //只有在Action的Array、List參數內是簡單型別，免加索引
+
+
+      let action_ModelBindingArrayNestedObj = { tag: "(Person[] data)", url: "/Default/ModelBindingArrayNestedObj", dataType: "json", contentType: appUrlencoded };
+      var sObj1 = [{
+        Name: $("#txtInPutName1").val(),
+        Age: $("#txtInPutAge1").val(),
+        Friends: [{
+          Name: $("#txtInPut1F1Name").val(),
+          Age: $("#txtInPut1F1Age").val(),
+          Friends: [{
+            Name: $("#txtInPut1F1F1Name").val(),
+            Age: $("#txtInPut1F1F1Age").val()
+          }]
+        }, {
+          Name: $("#txtInPut1F2Name").val(),
+          Age: $("#txtInPut1F2Age").val()
+        }]
+      },
+      {
+        Name: $("#txtInPutName2").val(),
+        Age: $("#txtInPutAge2").val(),
+        Friends: [{
+          Name: $("#txtInPut2F1Name").val(),
+          Age: $("#txtInPut2F1Age").val(),
+          Friends: [{
+            Name: $("#txtInPut2F1F1Name").val(),
+            Age: $("#txtInPut2F1F1Age").val()
+          }]
+        }, {
+          Name: $("#txtInPut2F2Name").val(),
+          Age: $("#txtInPut2F2Age").val()
+        }]
+      }];
+      var sObj2 = { data: sObj1 };
+      var sObj3 =
+        [new jqdata
+          ($("#txtInPutName1").val(), $("#txtInPutAge1").val(), [
+            new jqdata($("#txtInPut1F1Name").val(), $("#txtInPut1F1Age").val(),
+              [new jqdata($("#txtInPut1F1F1Name").val(), $("#txtInPut1F1F1Age").val())]),
+            new jqdata($("#txtInPut1F2Name").val(), $("#txtInPut1F2Age").val())]),
+        new jqdata
+          ($("#txtInPutName2").val(), $("#txtInPutAge2").val(), [
+            new jqdata($("#txtInPut2F1Name").val(), $("#txtInPut2F1Age").val(),
+              [new jqdata($("#txtInPut2F1F1Name").val(), $("#txtInPut2F1F1Age").val())]),
+            new jqdata($("#txtInPut2F2Name").val(), $("#txtInPut2F2Age").val())])];
+      var sObj4 = { data: sObj3 };
+    
+      var sObj5 = {        
+        "[0]":
+        {
+          Name: $("#txtInPutName1").val(), Age: $("#txtInPutAge1").val(),
+          "Friends[0]":
+          {
+            Name: $("#txtInPut1F1Name").val(), Age: $("#txtInPut1F1Age").val(),
+
+            "Friends[0]": { Name: $("#txtInPut1F1F1Name").val(), Age: $("#txtInPut1F1F1Age").val() }
+          },
+          "Friends[1]": {
+            Name: $("#txtInPut1F2Name").val(), Age: $("#txtInPut1F2Age").val()
+          }
+        },
+        "[1]":
+        {
+          Name: $("#txtInPutName2").val(), Age: $("#txtInPutAge2").val(),
+          "Friends[0]":
+          {
+            Name: $("#txtInPut2F1Name").val(), Age: $("#txtInPut2F1Age").val(),
+
+            "Friends[0]": { Name: $("#txtInPut2F1F1Name").val(), Age: $("#txtInPut2F1F1Age").val() }
+          },
+          "Friends[1]": {
+            Name: $("#txtInPut2F2Name").val(), Age: $("#txtInPut2F2Age").val()
+          }
+        }
+      }
+      var sObjArray1 = $('#ArrayNestedObj').serializeArray();
+
+      var sQuery2 = $.param(sObj2);
+      var sQuery4 = $.param(sObj4);
+      var sQuery5 = $.param(sObj5);
+      //#region 集合複雜巢狀型別繫結
+      let modelBindingArrayNestedObj = factory(action_ModelBindingArrayNestedObj);
+     // modelBindingArrayNestedObj.ajax(sObj1);// 失敗
+      modelBindingArrayNestedObj.ajax(sObj2);
+     //modelBindingArrayNestedObj.ajax(sObj3);   // 失敗
+      modelBindingArrayNestedObj.ajax(sObj4);
+      modelBindingArrayNestedObj.ajax(sObj5);
+      modelBindingArrayNestedObj.ajax(sObjArray1);
+      modelBindingArrayNestedObj.ajax(sQuery2)
+      modelBindingArrayNestedObj.ajax(sQuery4)
+    
+
+
+      modelBindingArrayNestedObj.contentType = appJson;
+      modelBindingArrayNestedObj.ajax(sObj1);
+      modelBindingArrayNestedObj.ajax(sObj2);
+      modelBindingArrayNestedObj.ajax(sObj3);
+      modelBindingArrayNestedObj.ajax(sObj4);
+      modelBindingArrayNestedObj.ajax(sObj5);
+      //#endregion
+
+    });
+
+
+
+
+
+  </script>
+}

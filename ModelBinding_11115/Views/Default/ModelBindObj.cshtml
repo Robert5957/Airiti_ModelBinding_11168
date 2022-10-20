@@ -1,0 +1,70 @@
+﻿@using ModelBinding_11115.Models;
+
+
+<h2>ModelBindObj</h2>
+
+<div class="text-center">
+
+  <form method="post" action="/Default/ModelBindObj" id="ModelBindObjForm">
+    <div> 表單值(ModelBindObj)</div>
+    Name<input id="txtInPutMBName" name="Name" value="Siri"></>
+    Age<input id="txtInPutMBAge" name="Age" type="number" value="16"></><br />
+  </form>
+  <div id="result"></div>
+</div>
+@section Scripts{
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.10.3/beautify.js"></script>
+  <script src="~/Content/site.js"></script>
+  <script>
+    $(function () {
+
+      //jQuery 的 Ajax，若指定dataType，Server Response的資料必須為該型別，否則回報轉型失敗
+      //只要與Action的參數對應，只有一種可能性，就不用指名
+      //只有在Action的Array、List參數內是簡單型別，免加索引
+
+                                                                                                                                                                                                                                      
+      let action_ModelBindObj = { tag: "(Human data)", url: "/Default/ModelBindObj", dataType: "json", contentType: appUrlencoded };                                           
+
+      //#region 複雜型別繫結
+      let modelBindingObj = factory(action_ModelBindObj);
+      var sObj1 = {
+        Name: $("#txtInPutMBName").val(),
+        Age: $("#txtInPutMBAge").val()
+      };
+      var sObj2 = {data:sObj1};
+      var sObj3 = new jqdata($("#txtInPutMBName").val(), $("#txtInPutMBAge").val())
+      var sObj4 = { data: sObj3 };              
+
+      var sObjArray1 = $('#ModelBindObjForm').serializeArray();
+      var sQuery = $('#ModelBindObjForm').serialize()
+      var sQuery1 = $.param(sObj1);
+      var sQuery2 = $.param(sObj2);
+      var sQuery3 = $.param(sObj3);
+      var sQuery4 = $.param(sObj4);
+     
+      modelBindingObj.ajax(sObj1);
+      modelBindingObj.ajax(sObj2);
+      modelBindingObj.ajax(sObj3);
+      modelBindingObj.ajax(sObj4);
+     
+      modelBindingObj.ajax(sObjArray1);
+      
+      modelBindingObj.ajax(sQuery);
+      //modelBindingObj.ajax(sQuery1); //同sQuery
+      modelBindingObj.ajax(sQuery2);
+      modelBindingObj.ajax(sQuery3);
+      modelBindingObj.ajax(sQuery4);
+      
+      modelBindingObj.contentType = appJson;     
+      modelBindingObj.ajax(sObj1);
+      modelBindingObj.ajax(sObj2);
+      modelBindingObj.ajax(sObj3);
+      modelBindingObj.ajax(sObj4);
+
+      //#endregion
+
+    });
+
+
+  </script>
+}

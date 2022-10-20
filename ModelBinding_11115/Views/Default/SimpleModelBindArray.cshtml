@@ -1,0 +1,81 @@
+﻿@using ModelBinding_11115.Models;
+
+
+<h2>SimpleModelBindArray</h2>
+
+<div class="text-center">
+  <form method="post" action="/Default/SimpleModelBindArray" id="SimpleModelBindArrayForm">
+    <div>表單值(SimpleModelBindArray)</div>
+    Name<input id="StxtInPutName1" name="Name[0]" value="Siri"></>
+    Age<input id="StxtInPutAge1" name="Age[0]" type="number" value="12"></><br />
+    Name<input id="StxtInPutName2" name="Name[1]" value="Apple"></>
+    Age<input id="StxtInPutAge2" name="Age[1]" type="number" value="23"></><br />
+    Name<input id="StxtInPutName3" name="Name[2]" value="IOS"></>
+    Age<input id="StxtInPutAge3" name="Age[2]" type="number" value="34"></><br />
+  </form>
+  <div id="result"></div>
+</div>
+@section Scripts{
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.10.3/beautify.js"></script>
+  <script src="~/Content/site.js"></script>
+  <script>
+    $(function () {
+
+      //jQuery 的 Ajax，若指定dataType，Server Response的資料必須為該型別，否則回報轉型失敗
+      //只要與Action的參數對應，只有一種可能性，就不用指名
+      //只有在Action的Array、List參數內是簡單型別，免加索引
+  
+                                                                                                                                                                                                                     
+      let action_SimpleModelBindArray = { tag: "(string[] Name, int[] Age)", url: "/Default/SimpleModelBindArray", dataType: "text", contentType: appUrlencoded };            
+ 
+      //#region 集合簡單型別繫結
+      let simpleModelBindArray = factory(action_SimpleModelBindArray);
+      var sObj1 = {
+        Name: [$("#StxtInPutName1").val(), $("#StxtInPutName2").val(), $("#StxtInPutName3").val()],
+        Age: [$("#StxtInPutAge1").val(), $("#StxtInPutAge2").val(), $("#StxtInPutAge3").val()]
+      };
+      var sObj2 = new jqdata([$("#StxtInPutName1").val(), $("#StxtInPutName2").val(), $("#StxtInPutName3").val()], [$("#StxtInPutAge1").val(), $("#StxtInPutAge2").val(), $("#StxtInPutAge3").val()]);
+
+      var sObj3 = {
+        "Name[0]": $("#StxtInPutName1").val(),
+        "Age[0]": $("#StxtInPutAge1").val(),
+        "Name[1]": $("#StxtInPutName2").val(),
+        "Age[1]": $("#StxtInPutAge2").val(),
+        "Name[2]": $("#StxtInPutName3").val(),
+        "Age[2]": $("#StxtInPutAge3").val()
+      };
+      var sObjArray1 = $("#SimpleModelBindArrayForm").serializeArray();
+
+      var sQuery1true = $.param(sObj1, true);
+      var sQuery1false = $.param(sObj1, false);     
+      var sQuery2true = $.param(sObj2, true);
+      var sQuery2false = $.param(sObj2, false);
+      var sQuery3true = $.param(sObj3, true);
+      var sQuery3false = $.param(sObj3, false);
+
+      simpleModelBindArray.ajax(sObj1);
+      simpleModelBindArray.ajax(sObj2);
+      simpleModelBindArray.ajax(sObj3);
+      simpleModelBindArray.ajax(sObjArray1);
+      simpleModelBindArray.ajax(sQuery1true);
+      simpleModelBindArray.ajax(sQuery1false);
+      simpleModelBindArray.ajax(sQuery2true);
+      simpleModelBindArray.ajax(sQuery2false);
+      simpleModelBindArray.ajax(sQuery3true);
+      ////simpleModelBindArray.ajax(sQuery3false);   //同true
+      
+      simpleModelBindArray.contentType = appJson;
+      simpleModelBindArray.ajax(sObj1);
+      simpleModelBindArray.ajax(sObj2);
+      simpleModelBindArray.ajax(sObj3);
+
+      //#endregion
+
+    });
+
+
+
+
+
+  </script>
+}
