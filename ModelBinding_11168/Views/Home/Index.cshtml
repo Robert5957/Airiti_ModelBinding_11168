@@ -80,17 +80,20 @@
 
 @section scripts
     {
-    <script>$('#btnSubmit').click(() => { test(); })
+    <script>
+        $('#btnSubmit').click(() => {
+            test();
+        })
         function jqdata(name, age, friends = null) {
             this.name = name
             this.age = age
-            this.Friends = friends || null     }
+            this.Friends = friends || null
+        }
         function test() {
             var actionName = document.getElementById("dataBinding").value;
             var method = document.getElementById("method").value;
             var contentType = document.getElementById("contentType").value;
             var dataType = document.getElementById("dataType").value;
-            alert(contentType );
             var variables =
             {
                 SimpleBinding: [{ Name: "Trumpt", Age: 11 }/*物件*/, 'Name=Trumpt&Age=12', new jqdata("Trumpt", 13)]
@@ -110,22 +113,38 @@
             }
             var styles = ["string Name, int Age", "Human data", "string[] Name, int[] Age", "Human[] data", "Person data", "Person[] data"]
             var contenttypes = ["application/x-www-form-urlencoded; charset=utf-8", "application/json; charset=utf-8"]
+
+            //draw column header of table
+            var table = document.createElement('table');
+            var tr = document.createElement('tr');
+            var array = ['資料繫結方式', '傳遞方法', '內容類型', '接收資料類型', '輸入object', '送出內容', '接收資料類型', '返回 Http Response body'];
+
+            for (var j = 0; j < array.length; j++) {
+                var th = document.createElement('th'); //column
+                var text = document.createTextNode(array[j]); //cell
+                th.appendChild(text);
+                tr.appendChild(th);
+            }
+            table.appendChild(tr);
+            $('#allcontent').append(table)
+
             for (var actionname in variables) {
                 if (variables.hasOwnProperty(actionname)) {
-                    variables[actionname].forEach((object) => {
-                        contenttypes.forEach(type => {
+                    if (actionname == actionName) {
+                        variables[actionname].forEach((object) => {
                             var docfrag = $(document.createDocumentFragment())
-                            var frag0 = "", frag1 = "", frag2 = "", frag3 = "", frag4 = ""
-                            if (type == "application/json; charset=utf-8") {
-                                object = JSON.stringify(object)
+                            var frag0 = "資料繫結方式", frag1 = "傳遞方法", frag2 = "送出內容", frag3 = "接收資料類型", frag4 = "輸入object", frag5 = "送出內容", frag6 = "接收資料類型", frag7 = "返回 Http Response body"
+                            if (contentType == "application/json; charset=utf-8") {
+                                object = JSON.stringify(object);
+
                                 $.ajax(
                                     {
                                         url: "/HOME/" + actionname,
-                                        method: 'Post',
+                                        method: method,
                                         processData: false,
                                         data: object,
-                                        contentType: type,
-                                        dataType: "text",
+                                        contentType: contentType,
+                                        dataType: dataType,
                                         async: false,
                                         cache: false,
                                         beforeSend: function (jqXHR, settings) {
@@ -133,7 +152,7 @@
                                             frag0 = $("<p></p>").text(actionname)
                                             frag1 = $("<p></p>").text("輸入object")
                                             frag2 = $("<div class='ans'></div>").text(object)
-                                            frag3 = $("<p></p>").text("送出內容，依據" + type)
+                                            frag3 = $("<p></p>").text("送出內容，依據" + contentType)
                                             frag4 = $("<div class='ans'></div>").text(settings.data)
                                             docfrag.append([frag0], [frag1], [frag2], [frag3], [frag4])
                                         },
@@ -164,18 +183,19 @@
                                 $.ajax(
                                     {
                                         url: "/HOME/" + actionname,
-                                        method: 'Post',
+                                        method: method,
                                         processData: true,
                                         data: object,
-                                        contentType: type,
-                                        dataType: "text",
+                                        contentType: contentType,
+                                        dataType: dataType,
                                         cache: false,
                                         async: false,
                                         beforeSend: function (jqXHR, settings) {
+
                                             frag0 = $("<p></p>").text(actionname)
                                             frag1 = $("<p></p>").text("輸入object")
                                             frag2 = $("<div class='ans'></div>").text(JSON.stringify(object))
-                                            frag3 = $("<p></p>").text("送出內容，依據" + type)
+                                            frag3 = $("<p></p>").text("送出內容，依據" + contentType)
                                             frag4 = $("<div class='ans'></div>").text(settings.data)
                                             docfrag.append([frag0], [frag1], [frag2], [frag3], [frag4])
                                         },
@@ -195,18 +215,39 @@
 
                                         },
                                         complete: function () {
-
                                             var area = $("<div class='area'></div>").html(docfrag)
                                             $('#allcontent').append(area)
                                             docfrag = null
                                         }
                                     })
-
                             }
-
+               
                         })
-                    })
+                    }
                 }
             }
-        }</script>
+        }
+        function drawTable() {
+            var table = document.createElement('table');
+            var tr = document.createElement('tr');
+            var array = ['資料繫結方式', '傳遞方法', '內容類型', '接收資料類型', '輸入object', '送出內容','返回 Http Response body','接收資料類型'];
+
+            for (var j = 0; j < array.length; j++) {
+                var th = document.createElement('th'); //column
+                var text = document.createTextNode(array[j]); //cell
+                th.appendChild(text);
+                tr.appendChild(th);
+            }
+            table.appendChild(tr);
+            var tr = document.createElement('tr');
+            for (var i = 0; i < array.length; i++) {
+                var td1= document.createElement('td');
+                var text1 = document.createTextNode('Text1');
+                td1.appendChild(text1);
+                tr.appendChild(td1);
+            }
+            table.appendChild(tr);
+            $('#allcontent').append(table)
+        }
+    </script>
 }

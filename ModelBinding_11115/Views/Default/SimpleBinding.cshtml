@@ -1,12 +1,12 @@
-﻿@using ModelBinding_11115.Models;
-@model ModelBinding_11115.Models;
+﻿@using ModelBinding_11115.Models
+@model ModelBinding_11115.Models.Human
 
 <h2>SimpleBinding</h2>
 
 <div class="text-center">
   <form method="post" action="/Default/SimpleBinding" id="SimpleBindingForm">
     <div> 表單值(SimpleBinding)</div>
-    Name<input id="txtInPutName" name="Name" value=@Model.Name></>
+    Name<input id="txtInPutName" name="Name" value="IRIS"></>
     Age<input id="txtInPutAge" name="Age" type="number" value="16"></><br />
   </form>
   <div id="result"></div>
