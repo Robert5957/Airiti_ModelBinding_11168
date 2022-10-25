@@ -1,60 +1,104 @@
 ﻿@using ModelBinding_11115.Models
 @model ModelBinding_11115.Models.Human
-
+<style>
+    tr {
+        margin: 0;
+        padding: 0;
+        top: 0;
+        left: 0;
+        border: red;
+    }
+</style>
 <h2>SimpleBinding</h2>
-
-<div class="text-center">
-  <form method="post" action="/Default/SimpleBinding" id="SimpleBindingForm">
-    <div> 表單值(SimpleBinding)</div>
-    Name<input id="txtInPutName" name="Name" value="IRIS"></>
-    Age<input id="txtInPutAge" name="Age" type="number" value="16"></><br />
-  </form>
-  <div id="result"></div>
+<form method="post" action="/Default/SimpleBinding" id="SimpleBindingForm">
+    <div class="text-center">
+        <div> 表單值(SimpleBinding)</div>
+        Name<input id="txtInPutName" name="Name" value="IRIS"></>
+        Age<input id="txtInPutAge" name="Age" type="number" value="16"></><br />
+        <div id="result"></div>
+    </div>
+</form>
+<div class=" form-inline" id="allcontent">
+    <div class="form-group form-group-lg">
+        <label for="dataBinding">資料繫結方式</label>
+        <br />
+        @Html.DropDownList("dataBinding", new List<SelectListItem>() {
+                    new SelectListItem(){ Value = "SimpleBinding", Text = "SimpleBinding"},
+                    new SelectListItem(){ Value = "ModelBindObj", Text = "ModelBindObj" },
+                    new SelectListItem(){ Value = "SimpleModelBindArray", Text = "SimpleModelBindArray" },
+                    new SelectListItem(){ Value = "ModelBindingArray", Text = "ModelBindingArray" },
+                    new SelectListItem(){ Value = "ModelBindingNestedObj", Text = "ModelBindingNestedObj" },
+                    new SelectListItem(){ Value = "ModelBindingArrayNestedObj", Text = "ModelBindingArrayNestedObj" }
+                })
+    </div>
+    @*<div class="form-group form-group-lg ">
+            <label for="method">傳遞方法</label>
+            <br />
+            @Html.DropDownList("method", new List<SelectListItem>() {
+                     new SelectListItem(){ Value = "post", Text = "POST" },
+                     new SelectListItem(){ Value = "get", Text = "GET" },
+                    })
+        </div>*@
+    <div class="form-group form-group-lg">
+        <label for="contentType">內容類型</label>
+        <br />
+        @Html.DropDownList("contentType", new List<SelectListItem>() {
+                    new SelectListItem(){ Value = "application/x-www-form-urlencoded; charset=utf-8", Text = "application/x-www-form-urlencoded; charset=utf-8"},
+                    new SelectListItem(){ Value = "application/json; charset=utf-8", Text = "application/json; charset=utf-8" }
+                })
+    </div>
+    <div class="form-group form-group-lg">
+        <label for="dataType">接收資料類型</label>
+        <br />
+        @Html.DropDownList("dataType", new List<SelectListItem>() {
+                    new SelectListItem(){ Value = "text", Text = "text "},
+                    new SelectListItem(){ Value = "json", Text = "json" },
+                    new SelectListItem(){ Value = "xml", Text = "xml" },
+                    new SelectListItem(){ Value = "html", Text = "html" },
+                    new SelectListItem(){ Value = "script", Text = "script" }
+                })
+    </div>
+    <div class="form-group form-group-lg">
+        <label for=""></label>
+        <br /><button id="btnSubmit" class="btn btn-primary">送出</button>
+    </div>
 </div>
+<table class="table" id="tableMain">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">序號</th>
+            <th scope="col"> 資料繫結方式</th>
+            <th scope="col">輸入內容</th>
+            <th scope="col">內容類型</th>
+            <th scope="col">送出內容</th>
+            @*<th scope="col">URL編碼</th>*@
+            <th scope="col">傳回內容</th>
+
+        </tr>
+    </thead>
+</table>
+
+
 @section Scripts{
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.10.3/beautify.js"></script>
-  <script src="~/Content/site.js"></script>
-  <script>
-    $(function () {
-
-      //jQuery 的 Ajax，若指定dataType，Server Response的資料必須為該型別，否則回報轉型失敗
-      //只要與Action的參數對應，只有一種可能性，就不用指名
-      //只有在Action的Array、List參數內是簡單型別，免加索引
-
-      let action_SimpleBinding = { tag: "(string Name, int Age)", url: "/Default/SimpleBinding", dataType: "text", contentType: appUrlencoded };                                
-
-      //#region 簡單型別繫結
-      var sObj1 = {
-        "Name": $('#txtInPutName').val(),
-        "Age": $('#txtInPutAge').val(),
-      };                                       
-      var sObj2 = new jqdata($("#txtInPutName").val(), $("#txtInPutAge").val());
-      var sObjArray1 = $('#SimpleBindingForm').serializeArray();
-    
-      var sQuery1 = $.param(sObj1);   
-      var sQuery2 = $.param(sObj2);
-    
-      let simpleBinding = factory(action_SimpleBinding);
-      
-      simpleBinding.ajax(sObj1);         
-      simpleBinding.ajax(sQuery1);
-      simpleBinding.ajax(sObjArray1);   
-      simpleBinding.ajax(sObj2);
-      simpleBinding.ajax(sQuery2);
-      
-      simpleBinding.contentType = appJson;
-      simpleBinding.ajax(sObj1);
-     // simpleBinding.ajax(sObj2Array);     // 失敗
-      simpleBinding.ajax(sObj2);
-
-      //#endregion
-
-
-    });
-
-  
-
-
-
-  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.10.3/beautify.js"></script>
+    <script src="~/Content/site.js"></script>
+    <script>
+        $(function () {
+            let action_SimpleBinding = { tag: "(string Name, int Age)", url: "/Default/SimpleBinding", dataType: "text", contentType: appUrlencoded };
+            //#region 簡單型別繫結
+            var sObj1 = {
+                "Name": $('#txtInPutName').val(),
+                "Age": $('#txtInPutAge').val(),
+            };
+            var sObj2 = new jqdata($("#txtInPutName").val(), $("#txtInPutAge").val());
+            var sObjArray1 = $('#SimpleBindingForm').serializeArray();
+            let simpleBinding = factory(action_SimpleBinding);
+            simpleBinding.ajax(sObj1);
+            simpleBinding.ajax(sObjArray1);
+            simpleBinding.ajax(sObj2);
+            simpleBinding.contentType = appJson;
+            simpleBinding.ajax(sObj1);
+            simpleBinding.ajax(sObj2);
+        });
+    </script>
 }

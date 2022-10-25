@@ -1,12 +1,23 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - 我的 ASP.NET 應用程式</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/StyleSheet1.css" rel="stylesheet" />
+    <style>
+        html, body {
+            padding: 20px;
+            margin: 0;
+            border: 3px solid #73AD21;
+            min-height: 100vh;
+            background-color: bisque;
+        }
+    </style>
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -17,13 +28,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("應用程式名稱", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("輸入用", "Index", "ModelBinding", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("首頁", "Index", "Home")</li>
-                    <li>@Html.ActionLink("關於", "About", "Home")</li>
-                    <li>@Html.ActionLink("連絡人", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("SimpleBinding", "SimpleBinding", "ModelBinding")</li>
+                    <li>@Html.ActionLink("ModelBindObj", "ModelBindObj", "ModelBinding")</li>
+                    <li>@Html.ActionLink("SimpleModelBindArray", "SimpleModelBindArray", "ModelBinding")</li>
+                    <li>@Html.ActionLink("ModelBindingArray", "ModelBindingArray", "ModelBinding")</li>
+                    <li>@Html.ActionLink("ModelBindingNestedObj", "ModelBindingNestedObj", "ModelBinding")</li>
+                    <li>@Html.ActionLink("ModelBindingArrayNestedObj", "ModelBindingArrayNestedObj", "ModelBinding")</li>
                 </ul>
             </div>
         </div>
@@ -35,9 +49,93 @@
             <p>&copy; @DateTime.Now.Year - 我的 ASP.NET 應用程式</p>
         </footer>
     </div>
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    @*<script>const appUrlencoded = "application/x-www-form-urlencoded";
+        const appJson = "application/json";
+        function factory(action) {
+            let obj =
+            {
+                tag: action.tag,
+                url: action.url,
+                dataType: action.dataType,
+                id: 1,
+                contentType: action.contentType,
+                ajax: (data, status) => {
+                    Ajax(obj, data, status);
+                }
+            };
+            return obj;
+        }
+        function Ajax(obj, inputData) {
+            let sendData,
+                Alerts,
+                inputType = typeof (inputData);
+            switch (obj.contentType) {
+                case "application/x-www-form-urlencoded":
+                    obj.processData = true;//讓jQuery協助將各種格式轉成http內容的編碼
+                    sendData = inputData;
+                    break;
+                case "application/json":
+                    obj.processData = true;
+                    if (inputType === "object")
+                        sendData = JSON.stringify(inputData);
+                    break;
+            }
+            $.ajax({
+                url: obj.url,
+                method: obj.method ? obj.method : 'POST',
+                contentType: obj.contentType + "; charset=UTF-8",
+                data: sendData,
+                dataType: obj.dataType,
+                processData: obj.processData,
+                async: false,
+                beforeSend: function (jqXHR, settings) {
+                    let dataTxt = "";
+                    switch (inputType) {
+                        case "object":
+                            dataTxt = js_beautify(JSON.stringify(inputData));
+                            break;
+                        case "string":
+                            dataTxt = inputData;
+                            break;
+                    }
+                    Alerts = ' <tbody>' +
+                        '<tr>' +
+                        '  <td>' + obj.id + '</td>' +
+                        '  <td>' + obj.tag + '</td>' +
+                        '   <td>' + dataTxt + '</td>' +
+                        '   <td>' + obj.contentType + '</td>' +
+                        '   <td>' + settings.data + '</td>';
+                },
+                success: function (result, textStatus, jqXHR) {
+                    switch (typeof (result)) {
+                        case "object":
+                            result = js_beautify(JSON.stringify(result));
+                            break;
+                        case "string":
+                            break;
+                    }
+                    $('#tableMain').append(Alerts.replace("※status※", 'success') + '<td>' + result + '</td>');
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $('#tableMain').append(Alerts.replace("※status※", 'danger'));
+                    console.log("error!");
+                },
+                complete: function () {
+                    $('#tableMain').append('<hr>');
+                    obj.id++;
+                }
+            });
+        }
+        function jqdata(name, age, friends = null) {
+            this.name = name
+            this.age = age
+            this.Friends = friends || null
+        }</script>*@
+
     @RenderSection("scripts", required: false)
 </body>
 </html>

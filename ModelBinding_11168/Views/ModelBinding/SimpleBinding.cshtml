@@ -1,0 +1,274 @@
+﻿@using ModelBinding_11115.Models
+@model ModelBinding_11115.Models.Human
+<style>
+    tr {
+        margin: 0;
+        padding: 0;
+        top: 0;
+        left: 0;
+        border: red;
+    }
+</style>
+<h2>SimpleBinding</h2>
+<form method="post" action="/ModelBinding/SimpleBinding" id="SimpleBindingForm">
+    <div class="text-center">
+        <div> 表單值(SimpleBinding)</div>
+        Name<input id="txtInPutName" name="Name" value="IRIS"></>
+        Age<input id="txtInPutAge" name="Age" type="number" value="16"></><br />
+        <div id="result"></div>
+    </div>
+</form>
+<div class=" form-inline" id="allcontent">
+    <div class="form-group form-group-lg">
+        <label for="dataBinding">資料繫結方式</label>
+        <br />
+        @Html.DropDownList("dataBinding", new List<SelectListItem>() {
+                    new SelectListItem(){ Value = "SimpleBinding", Text = "SimpleBinding"},
+                    new SelectListItem(){ Value = "ModelBindObj", Text = "ModelBindObj" },
+                    new SelectListItem(){ Value = "SimpleModelBindArray", Text = "SimpleModelBindArray" },
+                    new SelectListItem(){ Value = "ModelBindingArray", Text = "ModelBindingArray" },
+                    new SelectListItem(){ Value = "ModelBindingNestedObj", Text = "ModelBindingNestedObj" },
+                    new SelectListItem(){ Value = "ModelBindingArrayNestedObj", Text = "ModelBindingArrayNestedObj" }
+                })
+    </div>
+    <div class="form-group form-group-lg">
+        <label for="contentType">內容類型</label>
+        <br />
+        @Html.DropDownList("contentType", new List<SelectListItem>() {
+                    new SelectListItem(){ Value = "application/x-www-form-urlencoded; charset=utf-8", Text = "application/x-www-form-urlencoded; charset=utf-8"},
+                    new SelectListItem(){ Value = "application/json; charset=utf-8", Text = "application/json; charset=utf-8" }
+                })
+    </div>
+    <div class="form-group form-group-lg">
+        <label for=""></label>
+        <br /><button id="btnSubmit" class="btn btn-primary">送出</button>
+    </div>
+</div>
+<table class="table" id="tableMain">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">序號</th>
+            <th scope="col"> 資料型態</th>
+            <th scope="col">輸入內容</th>
+            <th scope="col">內容類型</th>
+            <th scope="col">送出內容</th>
+            @*<th scope="col">URL編碼</th>*@
+            <th scope="col">傳回內容</th>
+
+        </tr>
+    </thead>
+</table>
+
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.10.3/beautify.js"></script>
+
+    <script>
+        $('#btnSubmit').click(() => { ShowDetail(); });
+
+        function ShowDetail() {
+            var actionName = document.getElementById("dataBinding").value;
+            var appUrlencoded = document.getElementById('contentType').value;
+            let action_SimpleBinding = { tag: "(string Name, int Age)", url: "/ModelBinding/SimpleBinding", dataType: "text", contentType: appUrlencoded };
+            function jqdata(name, age, friends = null) {
+                this.name = name
+                this.age = age
+                this.Friends = friends || null
+            }
+            function factory(action) {
+                let obj =
+                {
+                    tag: action.tag,
+                    url: action.url,
+                    dataType: action.dataType,
+                    id: 1,
+                    contentType: action.contentType,
+                    ajax: (data, status) => {
+                        Ajax(obj, data, status);
+                    }
+                };
+                return obj;
+            };
+            function Ajax(obj, inputData) {
+                let sendData, Alerts,
+                    inputType = typeof (inputData);
+                switch (obj.contentType) {
+                    case "application/x-www-form-urlencoded":
+                        obj.processData = true;//讓jQuery協助將各種格式轉成http內容的編碼
+                        sendData = inputData;
+                        break;
+                    case "application/json":
+                        obj.processData = true;
+                        if (inputType === "object")
+                            sendData = JSON.stringify(inputData);
+                        break;
+                }
+                $.ajax({
+                    url: obj.url,
+                    method: obj.method ? obj.method : 'POST',
+                    contentType: obj.contentType + "; charset=UTF-8",
+                    data: sendData,
+                    dataType: obj.dataType,
+                    processData: obj.processData,
+                    async: false,
+                    beforeSend: function (jqXHR, settings) {
+                        let dataTxt = "";
+                        switch (inputType) {
+                            case "object":
+                                dataTxt = js_beautify(JSON.stringify(inputData));
+                                break;
+                            case "string":
+                                dataTxt = inputData;
+                                break;
+                        }
+                        Alerts = ' <tbody>' +
+                            '<tr>' +
+                            '  <td>' + obj.id + '</td>' +
+                            '  <td>' + obj.tag + '</td>' +
+                            '   <td>' + dataTxt + '</td>' +
+                            '   <td>' + obj.contentType + '</td>' +
+                            '   <td>' + settings.data + '</td>';
+                    },
+                    success: function (result, textStatus, jqXHR) {
+                        switch (typeof (result)) {
+                            case "object":
+                                result = js_beautify(JSON.stringify(result));
+                                break;
+                            case "string":
+                                break;
+                        }
+                        $('#tableMain').append(Alerts.replace("※status※", 'success') + '<td>' + result + '</td>');
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $('#tableMain').append(Alerts.replace("※status※", 'danger'));
+                        console.log("error!");
+                    },
+                    complete: function () {
+                        $('#tableMain').append('<hr>');
+                        obj.id++;
+                    }
+                });
+            }
+            //#region 簡單型別繫結
+            var sObj1 = {
+                "Name": $('#txtInPutName').val(),
+                "Age": $('#txtInPutAge').val(),
+            };
+            var sObj2 = new jqdata($("#txtInPutName").val(), $("#txtInPutAge").val());
+            var sObjArray1 = $('#SimpleBindingForm').serializeArray();
+            let simpleBinding = factory(action_SimpleBinding);
+            simpleBinding.ajax(sObj1);
+            simpleBinding.ajax(sObjArray1);
+            simpleBinding.ajax(sObj2);
+            simpleBinding.contentType = appJson;
+            simpleBinding.ajax(sObj1);
+            simpleBinding.ajax(sObj2);
+        }
+        function test() {
+            var actionName = document.getElementById("dataBinding").value;
+            var styles = ["string Name, int Age", "Human data", "string[] Name, int[] Age", "Human[] data", "Person data", "Person[] data"]
+            const appUrlencoded = "application/x-www-form-urlencoded";
+            const appJson = "application/json";
+            var contenttypes = ["application/x-www-form-urlencoded; charset=utf-8", "application/json; charset=utf-8"]
+            var i = 0
+            for (var actionname in variables) {
+                if (variables.hasOwnProperty(actionname)) {
+                    $('#allcontent').append("<hr id=bookmark" + i + "><hr><hr><h2>" + styles[i] + "</h2>")
+                    i = i + 1
+
+                    variables[actionname].forEach((object) => {
+                        contenttypes.forEach(type => {
+                            var docfrag = $(document.createDocumentFragment())
+                            var frag0 = "", frag1 = "", frag2 = "", frag3 = "", frag4 = ""
+                            if (type == "application/json; charset=utf-8") {
+                                object = JSON.stringify(object)
+                                $.ajax(
+                                    {
+                                        url: "/HOME/" + actionname,
+                                        method: 'Post',
+                                        processData: false,
+                                        data: object,
+                                        contentType: type,
+                                        dataType: "text",
+                                        async: false,
+                                        cache: false,
+                                        beforeSend: function (jqXHR, settings) {
+                                            frag0 = $("<p></p>").text(actionname)
+                                            frag1 = $("<p></p>").text("輸入object")
+                                            frag2 = $("<div class='ans'></div>").text(object)
+                                            frag3 = $("<p></p>").text("送出內容，依據" + type)
+                                            frag4 = $("<div class='ans'></div>").text(settings.data)
+                                            docfrag.append([frag0], [frag1], [frag2], [frag3], [frag4])
+                                        },
+                                        success: function (data) {
+                                            frag1 = $("<p></p>").text("返回 Http Response body")
+                                            frag2 = $("<div class='ans'></div>").text(data)
+                                            if (data == "") {
+                                                frag2 = $("<div class='ans'></div>").text("失敗")
+                                            }
+                                            docfrag.append([frag1], [frag2])
+
+                                        },
+                                        error: function (ex) {
+                                            frag1 = $("<p></p>").text("返回 Http Response body")
+                                            frag2 = $("<div class='ans'></div>").text("失敗")
+                                            docfrag.append([frag1], [frag2])
+
+                                        },
+                                        complete: function () {
+
+                                            var area = $("<div class='area'></div>").html(docfrag)
+                                            $('#allcontent').append(area)
+                                            docfrag = null
+                                        }
+                                    })
+                            }
+                            else {
+                                $.ajax(
+                                    {
+                                        url: "/HOME/" + actionname,
+                                        method: 'Post',
+                                        processData: true,
+                                        data: object,
+                                        contentType: type,
+                                        dataType: "text",
+                                        cache: false,
+                                        async: false,
+                                        beforeSend: function (jqXHR, settings) {
+                                            frag0 = $("<p></p>").text(actionname)
+                                            frag1 = $("<p></p>").text("輸入object")
+                                            frag2 = $("<div class='ans'></div>").text(JSON.stringify(object))
+                                            frag3 = $("<p></p>").text("送出內容，依據" + type)
+                                            frag4 = $("<div class='ans'></div>").text(settings.data)
+                                            docfrag.append([frag0], [frag1], [frag2], [frag3], [frag4])
+                                        },
+                                        success: function (data) {
+                                            frag1 = $("<p></p>").text("返回 Http Response body")
+                                            frag2 = $("<div class='ans'></div>").text(data)
+                                            if (data == "") {
+                                                frag2 = $("<div class='ans'></div>").text("失敗")
+                                            }
+                                            docfrag.append([frag1], [frag2])
+                                        },
+                                        error: function (ex) {
+                                            frag1 = $("<p></p>").text("返回 Http Response body")
+                                            frag2 = $("<div class='ans'></div>").text("失敗")
+                                            docfrag.append([frag1], [frag2])
+
+                                        },
+                                        complete: function () {
+
+                                            var area = $("<div class='area'></div>").html(docfrag)
+                                            $('#allcontent').append(area)
+                                            docfrag = null
+                                        }
+                                    })
+
+                            }
+
+                        })
+                    })
+                }
+            }
+        }
+    </script>
+}
