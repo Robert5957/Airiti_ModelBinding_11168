@@ -1,16 +1,17 @@
 ﻿@using ModelBinding_11115.Models
 @model ModelBinding_11115.Models.Human
 <style>
-    tr {
-        margin: 0;
-        padding: 0;
-        top: 0;
-        left: 0;
-        border: red;
+    table
+    {
+        table-layout:fixed;
+        overflow: scroll;
+    }
+    td {overflow-wrap:break-word;
+        margin:0;
+        padding:0;
     }
 </style>
 <h3>ModelBinding_11168</h3>
-
 <div class=" form-inline" id="allcontent">
     <div class="form-group form-group-lg">
         <label for="dataBinding">資料繫結方式</label>
@@ -40,26 +41,28 @@
 <table class="table" id="tableMain">
     <thead class="thead-dark">
         <tr>
-            <th scope="col">序號</th>
-            <th scope="col"> 資料型態</th>
-            <th scope="col">輸入內容</th>
-            <th scope="col">內容類型</th>
-            <th scope="col">送出內容</th>
+            <th scope="col" width="4%">序號</th>
+            <th scope="col"  width="8%"> 資料型態</th>
+            <th scope="col"  width="28%">輸入內容</th>
+            <th scope="col"  width="10%">內容類型</th>
+            <th scope="col" width="30%">送出內容</th>
             @*<th scope="col">URL編碼</th>*@
-            <th scope="col">傳回內容</th>
-
+            <th scope="col"  width="20%">傳回內容</th>
         </tr>
     </thead>
 </table>
-
 @section Scripts{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.10.3/beautify.js"></script>
 
     <script>
         $('#btnSubmit').click(() => {
-            //ShowDetail();
             modelBinding();
         });
+        function jqdata(name, age, friends = null) {
+            this.name = name
+            this.age = age
+            this.Friends = friends || null
+        }
         function factory(action) {
             let obj =
             {
@@ -91,7 +94,7 @@
             $.ajax({
                 url: obj.url,
                 method: obj.method ? obj.method : 'POST',
-                contentType: obj.contentType  + "; charset=UTF-8",
+                contentType: obj.contentType + "; charset=UTF-8",
                 data: sendData,
                 dataType: obj.dataType,
                 processData: obj.processData,
@@ -129,7 +132,6 @@
                     console.log("error!");
                 },
                 complete: function () {
-                    //$('#tableMain').append('<hr>');
                     obj.id++;
                 }
             });
@@ -184,70 +186,9 @@
                             modelBinding.ajax(object);
                         })
                     }
-                }
-            }
-        }
-        function ShowDetail() {
-            var actionName = document.getElementById("dataBinding").value;
-            var appUrlencoded = document.getElementById('contentType').value;
-            var variables =
-            {
-                SimpleBinding: [{ Name: "Gina", Age: 11 }/*物件*/, 'Name=Gina&Age=12', new jqdata("Gina", 13)]
-                , ModelBindObj: [{ Name: "Gina", Age: 21 }, 'Name=Gina&Age=22', { data: { Name: "Gina", Age: 23 } }, { data: new jqdata('Gina', 24) }, new jqdata('Gina', 25)]
-                , SimpleModelBindArray: [{ Name: ["Gina", "Tom"], Age: [31, 1] }, new jqdata(["Gina", "Tom"], [32, 2]), { "Name[0]": "Gina", "Age[0]": 33, "Name[1]": "Tom", "Age[1]": 3 }]
-                , ModelBindingArray: [{ data: [{ Name: "Gina", Age: 41 }, { Name: "Tom", Age: 1 }] }, [{ Name: "Gina", Age: 42 }, { Name: "Tom", Age: 1 }], { data: [new jqdata("Gina", 43), new jqdata("Tom", 1)] }, [new jqdata("Gina", 43), new jqdata("Tom", 1)], { "data[0]": { Name: "Gina", Age: 44 }, "data[1]": { Name: "Tom", Age: 2 } }, { "[0]": { Name: "Gina", Age: 45 }, "[1]": { Name: "Tom", Age: 2 } }]
-                , ModelBindingNestedObj: [{ data: { Name: "Gina", Age: 51, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] } }, { Name: "Gina", Age: 52, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, { data: new jqdata('Gina', 53, [new jqdata('Tina', 20, null)]) }, new jqdata('Gina', 54, [new jqdata('Tina', 20, null)])]
-                , ModelBindingArrayNestedObj: [
-                    { data: [{ Name: "Gina", Age: 61, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] }] }
-                    , [{ Name: "Gina", Age: 62, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] }]
-                    , { data: [new jqdata('Gina', 63, [new jqdata('Ivy', 2)]), new jqdata('Fanny', 23, [new jqdata('Eva', 2)])] }
-                    , [new jqdata('Gina', 64, [new jqdata('Ivy', 2)]), new jqdata('Fanny', 23, [new jqdata('Eva', 2)])]
-                    , { "data[0]": { Name: "Gina", Age: 65, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, "data[1]": { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] } }
-                    , { "[0]": { Name: "Gina", Age: 66, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, "[1]": { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] } }
-                ]
-
-            }
-            let actionStyle;
-            switch (actionName) {
-                case "SimpleBinding":
-                    actionStyle = "string Name, int Age";
-                    break;
-                case "ModelBindObj":
-                    actionStyle = "Human data";
-                    break;
-                case "SimpleModelBindArray":
-                    actionStyle = "string[] Name, int[] Age";
-                    break;
-                case "ModelBindingArray":
-                    actionStyle = "Human[] data";
-                    break;
-                case "ModelBindingNestedObj":
-                    actionStyle = "Person data";
-                    break;
-                case "ModelBindingArrayNestedObj":
-                    actionStyle = "Person[] data";
-                    break;
-            }
-            let action_SimpleBinding = { tag: actionStyle, url: "/ModelBinding/" + actionName, dataType: "text", contentType: appUrlencoded };
-
-            var sObj1 = {
-                "Name": $('#txtInPutName').val(),
-                "Age": $('#txtInPutAge').val(),
-            };
-            var sObj2 = new jqdata($("#txtInPutName").val(), $("#txtInPutAge").val());
-            var sObjArray1 = $('#SimpleBindingForm').serializeArray();
-            let simpleBinding = factory(action_SimpleBinding);
-            simpleBinding.ajax(sObj1);
-            simpleBinding.ajax(sObjArray1);
-            simpleBinding.ajax(sObj2);
-            simpleBinding.contentType = appJson;
-            simpleBinding.ajax(sObj1);
-            simpleBinding.ajax(sObj2);
-        }
-        function jqdata(name, age, friends = null) {
-            this.name = name
-            this.age = age
-            this.Friends = friends || null
+                 
+                } 
+            } $('#tableMain').append('<td >End</td>');
         }
     </script>
 }

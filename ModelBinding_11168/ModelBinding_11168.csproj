@@ -165,11 +165,6 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\ModelBinding\SimpleBinding.cshtml" />
-    <Content Include="Views\ModelBinding\ModelBindObj.cshtml" />
-    <Content Include="Views\ModelBinding\SimpleModelBindArray.cshtml" />
-    <Content Include="Views\ModelBinding\ModelBindingArray.cshtml" />
-    <Content Include="Views\ModelBinding\ModelBindingNestedObj.cshtml" />
-    <Content Include="Views\ModelBinding\ModelBindingArrayNestedObj.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
