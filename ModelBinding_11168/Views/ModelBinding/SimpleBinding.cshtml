@@ -56,6 +56,7 @@
 
     <script>
         $('#btnSubmit').click(() => {
+/*            $('table tbody').empty();*/
             modelBinding();
         });
         function jqdata(name, age, friends = null) {
@@ -139,6 +140,7 @@
             });
         }
         function modelBinding() {
+
             var actionName = document.getElementById("dataBinding").value;
             var appUrlencoded = document.getElementById('contentType').value;
             var variables =
@@ -190,7 +192,8 @@
                     }
                  
                 } 
-            } $('#tableMain').append('<td >End</td>');
+            }/* $('#tableMain').append('<td >End</td>');*/
         }
+
     </script>
 }
