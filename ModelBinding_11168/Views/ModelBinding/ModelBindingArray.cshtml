@@ -1,7 +1,56 @@
-﻿
-@{
-    ViewBag.Title = "ModelBindingArray";
-}
+﻿        function text2() {
+            var actionName = document.getElementById("dataBinding").value;
+            var appUrlencoded = document.getElementById('contentType').value;
+            var variables =
+            {
+                SimpleBinding: [{ Name: "Gina", Age: 11 }/*物件*/, 'Name=Gina&Age=12', new jqdata("Gina", 13)]
+                , ModelBindObj: [{ Name: "Gina", Age: 21 }, 'Name=Gina&Age=22', { data: { Name: "Gina", Age: 23 } }, { data: new jqdata('Gina', 24) }, new jqdata('Gina', 25)]
+                , SimpleModelBindArray: [{ Name: ["Gina", "Tom"], Age: [31, 1] }, new jqdata(["Gina", "Tom"], [32, 2]), { "Name[0]": "Gina", "Age[0]": 33, "Name[1]": "Tom", "Age[1]": 3 }]
+                , ModelBindingArray: [{ data: [{ Name: "Gina", Age: 41 }, { Name: "Tom", Age: 1 }] }, [{ Name: "Gina", Age: 42 }, { Name: "Tom", Age: 1 }], { data: [new jqdata("Gina", 43), new jqdata("Tom", 1)] }, [new jqdata("Gina", 43), new jqdata("Tom", 1)], { "data[0]": { Name: "Gina", Age: 44 }, "data[1]": { Name: "Tom", Age: 2 } }, { "[0]": { Name: "Gina", Age: 45 }, "[1]": { Name: "Tom", Age: 2 } }]
+                , ModelBindingNestedObj: [{ data: { Name: "Gina", Age: 51, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] } }, { Name: "Gina", Age: 52, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, { data: new jqdata('Gina', 53, [new jqdata('Tina', 20, null)]) }, new jqdata('Gina', 54, [new jqdata('Tina', 20, null)])]
+                , ModelBindingArrayNestedObj: [
+                    { data: [{ Name: "Gina", Age: 61, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] }] }
+                    , [{ Name: "Gina", Age: 62, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] }]
+                    , { data: [new jqdata('Gina', 63, [new jqdata('Ivy', 2)]), new jqdata('Fanny', 23, [new jqdata('Eva', 2)])] }
+                    , [new jqdata('Gina', 64, [new jqdata('Ivy', 2)]), new jqdata('Fanny', 23, [new jqdata('Eva', 2)])]
+                    , { "data[0]": { Name: "Gina", Age: 65, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, "data[1]": { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] } }
+                    , { "[0]": { Name: "Gina", Age: 66, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, "[1]": { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] } }
+                ]
 
-<h2>ModelBindingArray</h2>
+            }
+            let actionStyle;
+            switch (actionName) {
+                case "SimpleBinding":
+                    actionStyle = "string Name, int Age";
+                    break;
+                case "ModelBindObj":
+                    actionStyle = "Human data";
+                    break;
+                case "SimpleModelBindArray":
+                    actionStyle = "string[] Name, int[] Age";
+                    break;
+                case "ModelBindingArray":
+                    actionStyle = "Human[] data";
+                    break;
+                case "ModelBindingNestedObj":
+                    actionStyle = "Person data";
+                    break;
+                case "ModelBindingArrayNestedObj":
+                    actionStyle = "Person[] data";
+                    break;
+            }
+            let action_modelBinding = { tag: actionStyle, url: "/ModelBinding/" + actionName, dataType: "text", contentType: appUrlencoded };
 
+            for (var actionname in variables) {
+                if (variables.hasOwnProperty(actionname)) {
+                    if (variables[actionname] == actionName) {
+                        let modelBinding = factory(action_modelBinding);
+                        variables[actionname].forEach((object) => {
+
+                            modelBinding.ajax(object);
+
+                        });
+                    }
+                }
+            }
+        }

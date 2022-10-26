@@ -9,15 +9,8 @@
         border: red;
     }
 </style>
-<h2>SimpleBinding</h2>
-<form method="post" action="/ModelBinding/SimpleBinding" id="SimpleBindingForm">
-    <div class="text-center">
-        <div> 表單值(SimpleBinding)</div>
-        Name<input id="txtInPutName" name="Name" value="IRIS"></>
-        Age<input id="txtInPutAge" name="Age" type="number" value="16"></><br />
-        <div id="result"></div>
-    </div>
-</form>
+<h3>ModelBinding_11168</h3>
+
 <div class=" form-inline" id="allcontent">
     <div class="form-group form-group-lg">
         <label for="dataBinding">資料繫結方式</label>
@@ -35,8 +28,8 @@
         <label for="contentType">內容類型</label>
         <br />
         @Html.DropDownList("contentType", new List<SelectListItem>() {
-                    new SelectListItem(){ Value = "application/x-www-form-urlencoded; charset=utf-8", Text = "application/x-www-form-urlencoded; charset=utf-8"},
-                    new SelectListItem(){ Value = "application/json; charset=utf-8", Text = "application/json; charset=utf-8" }
+                    new SelectListItem(){ Value = "application/x-www-form-urlencoded", Text = "application/x-www-form-urlencoded"},
+                    new SelectListItem(){ Value = "application/json", Text = "application/json" }
                 })
     </div>
     <div class="form-group form-group-lg">
@@ -63,92 +56,180 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.10.3/beautify.js"></script>
 
     <script>
-        $('#btnSubmit').click(() => { ShowDetail(); });
+        $('#btnSubmit').click(() => {
+            //ShowDetail();
+            modelBinding();
+        });
+        function factory(action) {
+            let obj =
+            {
+                tag: action.tag,
+                url: action.url,
+                dataType: action.dataType,
+                id: 1,
+                contentType: action.contentType,
+                ajax: (data, status) => {
+                    Ajax(obj, data, status);
+                }
+            };
+            return obj;
+        };
+        function Ajax(obj, inputData) {
+            let sendData, Alerts,
+                inputType = typeof (inputData);
+            switch (obj.contentType) {
+                case "application/x-www-form-urlencoded":
+                    //obj.processData = true;//讓jQuery協助將各種格式轉成http內容的編碼
+                    sendData = inputData;
+                    break;
+                case "application/json":
+                    //obj.processData = true;
+                    if (inputType === "object")
+                        sendData = JSON.stringify(inputData);
+                    break;
+            }
+            $.ajax({
+                url: obj.url,
+                method: obj.method ? obj.method : 'POST',
+                contentType: obj.contentType  + "; charset=UTF-8",
+                data: sendData,
+                dataType: obj.dataType,
+                processData: obj.processData,
+                async: false,
+                beforeSend: function (jqXHR, settings) {
+                    let dataTxt = "";
+                    switch (inputType) {
+                        case "object":
+                            dataTxt = js_beautify(JSON.stringify(inputData));
+                            break;
+                        case "string":
+                            dataTxt = inputData;
+                            break;
+                    }
+                    Alerts = ' <tbody>' +
+                        '<tr>' +
+                        '  <td>' + obj.id + '</td>' +
+                        '  <td>' + obj.tag + '</td>' +
+                        '   <td>' + dataTxt + '</td>' +
+                        '   <td>' + obj.contentType + '</td>' +
+                        '   <td>' + settings.data + '</td>';
+                },
+                success: function (result, textStatus, jqXHR) {
+                    switch (typeof (result)) {
+                        case "object":
+                            result = js_beautify(JSON.stringify(result));
+                            break;
+                        case "string":
+                            break;
+                    }
+                    $('#tableMain').append(Alerts.replace("※status※", 'success') + '<td>' + result + '</td>');
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $('#tableMain').append(Alerts.replace("※status※", 'danger') + '<td>' + 'error' + '</td>');
+                    console.log("error!");
+                },
+                complete: function () {
+                    //$('#tableMain').append('<hr>');
+                    obj.id++;
+                }
+            });
+        }
+        function modelBinding() {
+            var actionName = document.getElementById("dataBinding").value;
+            var appUrlencoded = document.getElementById('contentType').value;
+            var variables =
+            {
+                SimpleBinding: [{ Name: "Gina", Age: 11 }/*物件*/, 'Name=Gina&Age=12', new jqdata("Gina", 13)]
+                , ModelBindObj: [{ Name: "Gina", Age: 21 }, 'Name=Gina&Age=22', { data: { Name: "Gina", Age: 23 } }, { data: new jqdata('Gina', 24) }, new jqdata('Gina', 25)]
+                , SimpleModelBindArray: [{ Name: ["Gina", "Tom"], Age: [31, 1] }, new jqdata(["Gina", "Tom"], [32, 2]), { "Name[0]": "Gina", "Age[0]": 33, "Name[1]": "Tom", "Age[1]": 3 }]
+                , ModelBindingArray: [{ data: [{ Name: "Gina", Age: 41 }, { Name: "Tom", Age: 1 }] }, [{ Name: "Gina", Age: 42 }, { Name: "Tom", Age: 1 }], { data: [new jqdata("Gina", 43), new jqdata("Tom", 1)] }, [new jqdata("Gina", 43), new jqdata("Tom", 1)], { "data[0]": { Name: "Gina", Age: 44 }, "data[1]": { Name: "Tom", Age: 2 } }, { "[0]": { Name: "Gina", Age: 45 }, "[1]": { Name: "Tom", Age: 2 } }]
+                , ModelBindingNestedObj: [{ data: { Name: "Gina", Age: 51, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] } }, { Name: "Gina", Age: 52, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, { data: new jqdata('Gina', 53, [new jqdata('Tina', 20, null)]) }, new jqdata('Gina', 54, [new jqdata('Tina', 20, null)])]
+                , ModelBindingArrayNestedObj: [
+                    { data: [{ Name: "Gina", Age: 61, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] }] }
+                    , [{ Name: "Gina", Age: 62, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] }]
+                    , { data: [new jqdata('Gina', 63, [new jqdata('Ivy', 2)]), new jqdata('Fanny', 23, [new jqdata('Eva', 2)])] }
+                    , [new jqdata('Gina', 64, [new jqdata('Ivy', 2)]), new jqdata('Fanny', 23, [new jqdata('Eva', 2)])]
+                    , { "data[0]": { Name: "Gina", Age: 65, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, "data[1]": { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] } }
+                    , { "[0]": { Name: "Gina", Age: 66, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, "[1]": { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] } }
+                ]
 
+            }
+            let actionStyle;
+            switch (actionName) {
+                case "SimpleBinding":
+                    actionStyle = "string Name, int Age";
+                    break;
+                case "ModelBindObj":
+                    actionStyle = "Human data";
+                    break;
+                case "SimpleModelBindArray":
+                    actionStyle = "string[] Name, int[] Age";
+                    break;
+                case "ModelBindingArray":
+                    actionStyle = "Human[] data";
+                    break;
+                case "ModelBindingNestedObj":
+                    actionStyle = "Person data";
+                    break;
+                case "ModelBindingArrayNestedObj":
+                    actionStyle = "Person[] data";
+                    break;
+            }
+            let action_modelBinding = { tag: actionStyle, url: "/ModelBinding/" + actionName, dataType: "text", contentType: appUrlencoded };
+            for (var actionname in variables) {
+                if (variables.hasOwnProperty(actionname)) {
+                    if (actionname == actionName) {
+                        let modelBinding = factory(action_modelBinding);
+                        variables[actionname].forEach((object) => {
+                            modelBinding.ajax(object);
+                        })
+                    }
+                }
+            }
+        }
         function ShowDetail() {
             var actionName = document.getElementById("dataBinding").value;
             var appUrlencoded = document.getElementById('contentType').value;
-            let action_SimpleBinding = { tag: "(string Name, int Age)", url: "/ModelBinding/SimpleBinding", dataType: "text", contentType: appUrlencoded };
-            function jqdata(name, age, friends = null) {
-                this.name = name
-                this.age = age
-                this.Friends = friends || null
+            var variables =
+            {
+                SimpleBinding: [{ Name: "Gina", Age: 11 }/*物件*/, 'Name=Gina&Age=12', new jqdata("Gina", 13)]
+                , ModelBindObj: [{ Name: "Gina", Age: 21 }, 'Name=Gina&Age=22', { data: { Name: "Gina", Age: 23 } }, { data: new jqdata('Gina', 24) }, new jqdata('Gina', 25)]
+                , SimpleModelBindArray: [{ Name: ["Gina", "Tom"], Age: [31, 1] }, new jqdata(["Gina", "Tom"], [32, 2]), { "Name[0]": "Gina", "Age[0]": 33, "Name[1]": "Tom", "Age[1]": 3 }]
+                , ModelBindingArray: [{ data: [{ Name: "Gina", Age: 41 }, { Name: "Tom", Age: 1 }] }, [{ Name: "Gina", Age: 42 }, { Name: "Tom", Age: 1 }], { data: [new jqdata("Gina", 43), new jqdata("Tom", 1)] }, [new jqdata("Gina", 43), new jqdata("Tom", 1)], { "data[0]": { Name: "Gina", Age: 44 }, "data[1]": { Name: "Tom", Age: 2 } }, { "[0]": { Name: "Gina", Age: 45 }, "[1]": { Name: "Tom", Age: 2 } }]
+                , ModelBindingNestedObj: [{ data: { Name: "Gina", Age: 51, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] } }, { Name: "Gina", Age: 52, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, { data: new jqdata('Gina', 53, [new jqdata('Tina', 20, null)]) }, new jqdata('Gina', 54, [new jqdata('Tina', 20, null)])]
+                , ModelBindingArrayNestedObj: [
+                    { data: [{ Name: "Gina", Age: 61, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] }] }
+                    , [{ Name: "Gina", Age: 62, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] }]
+                    , { data: [new jqdata('Gina', 63, [new jqdata('Ivy', 2)]), new jqdata('Fanny', 23, [new jqdata('Eva', 2)])] }
+                    , [new jqdata('Gina', 64, [new jqdata('Ivy', 2)]), new jqdata('Fanny', 23, [new jqdata('Eva', 2)])]
+                    , { "data[0]": { Name: "Gina", Age: 65, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, "data[1]": { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] } }
+                    , { "[0]": { Name: "Gina", Age: 66, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, "[1]": { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] } }
+                ]
+
             }
-            function factory(action) {
-                let obj =
-                {
-                    tag: action.tag,
-                    url: action.url,
-                    dataType: action.dataType,
-                    id: 1,
-                    contentType: action.contentType,
-                    ajax: (data, status) => {
-                        Ajax(obj, data, status);
-                    }
-                };
-                return obj;
-            };
-            function Ajax(obj, inputData) {
-                let sendData, Alerts,
-                    inputType = typeof (inputData);
-                switch (obj.contentType) {
-                    case "application/x-www-form-urlencoded":
-                        obj.processData = true;//讓jQuery協助將各種格式轉成http內容的編碼
-                        sendData = inputData;
-                        break;
-                    case "application/json":
-                        obj.processData = true;
-                        if (inputType === "object")
-                            sendData = JSON.stringify(inputData);
-                        break;
-                }
-                $.ajax({
-                    url: obj.url,
-                    method: obj.method ? obj.method : 'POST',
-                    contentType: obj.contentType + "; charset=UTF-8",
-                    data: sendData,
-                    dataType: obj.dataType,
-                    processData: obj.processData,
-                    async: false,
-                    beforeSend: function (jqXHR, settings) {
-                        let dataTxt = "";
-                        switch (inputType) {
-                            case "object":
-                                dataTxt = js_beautify(JSON.stringify(inputData));
-                                break;
-                            case "string":
-                                dataTxt = inputData;
-                                break;
-                        }
-                        Alerts = ' <tbody>' +
-                            '<tr>' +
-                            '  <td>' + obj.id + '</td>' +
-                            '  <td>' + obj.tag + '</td>' +
-                            '   <td>' + dataTxt + '</td>' +
-                            '   <td>' + obj.contentType + '</td>' +
-                            '   <td>' + settings.data + '</td>';
-                    },
-                    success: function (result, textStatus, jqXHR) {
-                        switch (typeof (result)) {
-                            case "object":
-                                result = js_beautify(JSON.stringify(result));
-                                break;
-                            case "string":
-                                break;
-                        }
-                        $('#tableMain').append(Alerts.replace("※status※", 'success') + '<td>' + result + '</td>');
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        $('#tableMain').append(Alerts.replace("※status※", 'danger'));
-                        console.log("error!");
-                    },
-                    complete: function () {
-                        $('#tableMain').append('<hr>');
-                        obj.id++;
-                    }
-                });
+            let actionStyle;
+            switch (actionName) {
+                case "SimpleBinding":
+                    actionStyle = "string Name, int Age";
+                    break;
+                case "ModelBindObj":
+                    actionStyle = "Human data";
+                    break;
+                case "SimpleModelBindArray":
+                    actionStyle = "string[] Name, int[] Age";
+                    break;
+                case "ModelBindingArray":
+                    actionStyle = "Human[] data";
+                    break;
+                case "ModelBindingNestedObj":
+                    actionStyle = "Person data";
+                    break;
+                case "ModelBindingArrayNestedObj":
+                    actionStyle = "Person[] data";
+                    break;
             }
-            //#region 簡單型別繫結
+            let action_SimpleBinding = { tag: actionStyle, url: "/ModelBinding/" + actionName, dataType: "text", contentType: appUrlencoded };
+
             var sObj1 = {
                 "Name": $('#txtInPutName').val(),
                 "Age": $('#txtInPutAge').val(),
@@ -163,112 +244,10 @@
             simpleBinding.ajax(sObj1);
             simpleBinding.ajax(sObj2);
         }
-        function test() {
-            var actionName = document.getElementById("dataBinding").value;
-            var styles = ["string Name, int Age", "Human data", "string[] Name, int[] Age", "Human[] data", "Person data", "Person[] data"]
-            const appUrlencoded = "application/x-www-form-urlencoded";
-            const appJson = "application/json";
-            var contenttypes = ["application/x-www-form-urlencoded; charset=utf-8", "application/json; charset=utf-8"]
-            var i = 0
-            for (var actionname in variables) {
-                if (variables.hasOwnProperty(actionname)) {
-                    $('#allcontent').append("<hr id=bookmark" + i + "><hr><hr><h2>" + styles[i] + "</h2>")
-                    i = i + 1
-
-                    variables[actionname].forEach((object) => {
-                        contenttypes.forEach(type => {
-                            var docfrag = $(document.createDocumentFragment())
-                            var frag0 = "", frag1 = "", frag2 = "", frag3 = "", frag4 = ""
-                            if (type == "application/json; charset=utf-8") {
-                                object = JSON.stringify(object)
-                                $.ajax(
-                                    {
-                                        url: "/HOME/" + actionname,
-                                        method: 'Post',
-                                        processData: false,
-                                        data: object,
-                                        contentType: type,
-                                        dataType: "text",
-                                        async: false,
-                                        cache: false,
-                                        beforeSend: function (jqXHR, settings) {
-                                            frag0 = $("<p></p>").text(actionname)
-                                            frag1 = $("<p></p>").text("輸入object")
-                                            frag2 = $("<div class='ans'></div>").text(object)
-                                            frag3 = $("<p></p>").text("送出內容，依據" + type)
-                                            frag4 = $("<div class='ans'></div>").text(settings.data)
-                                            docfrag.append([frag0], [frag1], [frag2], [frag3], [frag4])
-                                        },
-                                        success: function (data) {
-                                            frag1 = $("<p></p>").text("返回 Http Response body")
-                                            frag2 = $("<div class='ans'></div>").text(data)
-                                            if (data == "") {
-                                                frag2 = $("<div class='ans'></div>").text("失敗")
-                                            }
-                                            docfrag.append([frag1], [frag2])
-
-                                        },
-                                        error: function (ex) {
-                                            frag1 = $("<p></p>").text("返回 Http Response body")
-                                            frag2 = $("<div class='ans'></div>").text("失敗")
-                                            docfrag.append([frag1], [frag2])
-
-                                        },
-                                        complete: function () {
-
-                                            var area = $("<div class='area'></div>").html(docfrag)
-                                            $('#allcontent').append(area)
-                                            docfrag = null
-                                        }
-                                    })
-                            }
-                            else {
-                                $.ajax(
-                                    {
-                                        url: "/HOME/" + actionname,
-                                        method: 'Post',
-                                        processData: true,
-                                        data: object,
-                                        contentType: type,
-                                        dataType: "text",
-                                        cache: false,
-                                        async: false,
-                                        beforeSend: function (jqXHR, settings) {
-                                            frag0 = $("<p></p>").text(actionname)
-                                            frag1 = $("<p></p>").text("輸入object")
-                                            frag2 = $("<div class='ans'></div>").text(JSON.stringify(object))
-                                            frag3 = $("<p></p>").text("送出內容，依據" + type)
-                                            frag4 = $("<div class='ans'></div>").text(settings.data)
-                                            docfrag.append([frag0], [frag1], [frag2], [frag3], [frag4])
-                                        },
-                                        success: function (data) {
-                                            frag1 = $("<p></p>").text("返回 Http Response body")
-                                            frag2 = $("<div class='ans'></div>").text(data)
-                                            if (data == "") {
-                                                frag2 = $("<div class='ans'></div>").text("失敗")
-                                            }
-                                            docfrag.append([frag1], [frag2])
-                                        },
-                                        error: function (ex) {
-                                            frag1 = $("<p></p>").text("返回 Http Response body")
-                                            frag2 = $("<div class='ans'></div>").text("失敗")
-                                            docfrag.append([frag1], [frag2])
-
-                                        },
-                                        complete: function () {
-
-                                            var area = $("<div class='area'></div>").html(docfrag)
-                                            $('#allcontent').append(area)
-                                            docfrag = null
-                                        }
-                                    })
-
-                            }
-
-                        })
-                    })
-                }
-            }
+        function jqdata(name, age, friends = null) {
+            this.name = name
+            this.age = age
+            this.Friends = friends || null
         }
     </script>
 }
