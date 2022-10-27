@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelBinding_11126", "Model
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelBinding_11168", "ModelBinding_11168\ModelBinding_11168.csproj", "{8F5C8D68-807D-4BD9-8627-6FCB147F28C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebModelBinding", "WebModelBinding\WebModelBinding.csproj", "{AAA30B36-C2D4-448F-80C8-9133FBFEE02E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelBindingAPI_MVC", "ModelBindingAPI_MVC\ModelBindingAPI_MVC.csproj", "{04833CF2-F34F-43B9-AFF1-20B2D59F1F63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,10 +83,10 @@ Global
 		{8F5C8D68-807D-4BD9-8627-6FCB147F28C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F5C8D68-807D-4BD9-8627-6FCB147F28C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F5C8D68-807D-4BD9-8627-6FCB147F28C3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AAA30B36-C2D4-448F-80C8-9133FBFEE02E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AAA30B36-C2D4-448F-80C8-9133FBFEE02E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AAA30B36-C2D4-448F-80C8-9133FBFEE02E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AAA30B36-C2D4-448F-80C8-9133FBFEE02E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04833CF2-F34F-43B9-AFF1-20B2D59F1F63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04833CF2-F34F-43B9-AFF1-20B2D59F1F63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04833CF2-F34F-43B9-AFF1-20B2D59F1F63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04833CF2-F34F-43B9-AFF1-20B2D59F1F63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
