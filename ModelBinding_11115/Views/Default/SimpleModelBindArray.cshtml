@@ -4,29 +4,16 @@
 <h2>SimpleModelBindArray</h2>
 
 <div class="text-center">
-    <form method="post" action="/Default/SimpleModelBindArray" id="SimpleModelBindArrayForm">
-        <div>表單值(SimpleModelBindArray)</div>
-        Name<input id="StxtInPutName1" name="Name[0]" value="Siri"></>
-        Age<input id="StxtInPutAge1" name="Age[0]" type="number" value="12"></><br />
-        Name<input id="StxtInPutName2" name="Name[1]" value="Apple"></>
-        Age<input id="StxtInPutAge2" name="Age[1]" type="number" value="23"></><br />
-        Name<input id="StxtInPutName3" name="Name[2]" value="IOS"></>
-        Age<input id="StxtInPutAge3" name="Age[2]" type="number" value="34"></><br />
-    </form>
-    <table class="table" id="tableMain">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">序號</th>
-                <th scope="col"> 資料繫結方式</th>
-                <th scope="col">輸入內容</th>
-                <th scope="col">內容類型</th>
-                <th scope="col">送出內容</th>
-                @*<th scope="col">URL編碼</th>*@
-                <th scope="col">傳回內容</th>
-
-            </tr>
-        </thead>
-    </table>
+  <form method="post" action="/Default/SimpleModelBindArray" id="SimpleModelBindArrayForm">
+    <div>表單值(SimpleModelBindArray)</div>
+    Name<input id="StxtInPutName1" name="Name[0]" value="Siri"></>
+    Age<input id="StxtInPutAge1" name="Age[0]" type="number" value="12"></><br />
+    Name<input id="StxtInPutName2" name="Name[1]" value="Apple"></>
+    Age<input id="StxtInPutAge2" name="Age[1]" type="number" value="23"></><br />
+    Name<input id="StxtInPutName3" name="Name[2]" value="IOS"></>
+    Age<input id="StxtInPutAge3" name="Age[2]" type="number" value="34"></><br />
+  </form>
+  <div id="result"></div>
 </div>
 @section Scripts{
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.10.3/beautify.js"></script>

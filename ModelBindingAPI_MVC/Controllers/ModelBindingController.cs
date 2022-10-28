@@ -20,7 +20,9 @@ namespace ModelBindingAPI_MVC.Controllers
         [HttpPost]
         public ActionResult SimpleBinding(string Name, int Age)
         {
-            return Content(nameof(Name) + ":" + Name + ", " + nameof(Age) + ":" + Age);
+            try
+            {
+                 return Content(nameof(Name) + ":" + Name + ", " + nameof(Age) + ":" + Age); } catch (Exception ex) { return Content(ex.Message); }
         }
         public ActionResult ModelBindObj()
         {
@@ -29,7 +31,7 @@ namespace ModelBindingAPI_MVC.Controllers
         [HttpPost]
         public ActionResult ModelBindObj(Human data)
         {
-            return Json(data);
+            if (data.Age != 0 && !string.IsNullOrEmpty(data.Name)) { return Json(data);} else {return Json("Null" );  }
         }
         public ActionResult SimpleModelBindArray()
         {
@@ -37,21 +39,56 @@ namespace ModelBindingAPI_MVC.Controllers
         }
         [HttpPost]
         public ActionResult SimpleModelBindArray(string[] Name, int[] Age)
-        {
-            string str = nameof(Name) + ":";
-            foreach (string n in Name)
+        {        if (Name != null)
             {
-                str += n + ",";
+                try
+                {
+                    List<string> listName = new List<string>();
+                    List<int> listAge = new List<int>();
+                    foreach (string s in Name)
+                    {
+                        if (!string.IsNullOrEmpty(s))
+                        {
+                            listName.Add(s);
+                        }
+                    }
+                    foreach (int age in Age)
+                    {
+                        if (age != 0)
+                        {
+                            listAge.Add(age);
+                        }
+                    }
+                    int countName = listName.Count();
+                    int countAge = listAge.Count();
+                    if (countName == 0 && countAge == 0)
+                    {
+                        return Content("Null");
+                    }
+                    else
+                    {
+                        string str = nameof(Name) + ":";
+                        foreach (string n in Name)
+                        {
+                            str += n + ",";
+                        }
+                        str = str.Substring(0, str.Length - 1);
+                        str += " | ";
+                        str += nameof(Age) + ":";
+                        foreach (int a in Age)
+                        {
+                            str += a + ",";
+                        }
+                        str = str.Substring(0, str.Length - 1);
+                        return Content(str);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return Content(ex.Message);
+                }
             }
-            str = str.Substring(0, str.Length - 1);
-            str += " | ";
-            str += nameof(Age) + ":";
-            foreach (int a in Age)
-            {
-                str += a + ",";
-            }
-            str = str.Substring(0, str.Length - 1);
-            return Content(str);
+            else { return Content("ObjectNotExist"); }
         }
         public ActionResult ModelBindingArray()
         {

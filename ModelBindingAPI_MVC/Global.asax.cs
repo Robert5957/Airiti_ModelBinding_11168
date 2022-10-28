@@ -19,5 +19,9 @@ namespace ModelBindingAPI_MVC
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+        //void BeginRequest()
+        //{
+        //      }
+
     }
 }

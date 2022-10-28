@@ -5,26 +5,12 @@
 
 <div class="text-center">
 
-    <form method="post" action="/Default/ModelBindObj" id="ModelBindObjForm">
-        <div> 表單值(ModelBindObj)</div>
-        Name<input id="txtInPutMBName" name="Name" value="Siri"></>
-        Age<input id="txtInPutMBAge" name="Age" type="number" value="16"></><br />
-    </form>
-    <table class="table" id="tableMain">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">序號</th>
-                <th scope="col"> 資料繫結方式</th>
-                <th scope="col">輸入內容</th>
-                <th scope="col">內容類型</th>
-                <th scope="col">送出內容</th>
-                @*<th scope="col">URL編碼</th>*@
-                <th scope="col">傳回內容</th>
-
-            </tr>
-        </thead>
-    </table>
-    <div id="result"></div>
+  <form method="post" action="/Default/ModelBindObj" id="ModelBindObjForm">
+    <div> 表單值(ModelBindObj)</div>
+    Name<input id="txtInPutMBName" name="Name" value="Siri"></>
+    Age<input id="txtInPutMBAge" name="Age" type="number" value="16"></><br />
+  </form>
+  <div id="result"></div>
 </div>
 @section Scripts{
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.10.3/beautify.js"></script>
@@ -48,6 +34,7 @@
       var sObj2 = {data:sObj1};
       var sObj3 = new jqdata($("#txtInPutMBName").val(), $("#txtInPutMBAge").val())
       var sObj4 = { data: sObj3 };              
+
       var sObjArray1 = $('#ModelBindObjForm').serializeArray();
       var sQuery = $('#ModelBindObjForm').serialize()
       var sQuery1 = $.param(sObj1);
@@ -59,15 +46,14 @@
       modelBindingObj.ajax(sObj2);
       modelBindingObj.ajax(sObj3);
       modelBindingObj.ajax(sObj4);
-     //5
+     
       modelBindingObj.ajax(sObjArray1);
-      //6
-      //modelBindingObj.ajax(sQuery);
-      ////modelBindingObj.ajax(sQuery1); //同sQuery
-      // //7
-      //modelBindingObj.ajax(sQuery2);
-      //modelBindingObj.ajax(sQuery3);
-      //modelBindingObj.ajax(sQuery4);
+      
+      modelBindingObj.ajax(sQuery);
+      //modelBindingObj.ajax(sQuery1); //同sQuery
+      modelBindingObj.ajax(sQuery2);
+      modelBindingObj.ajax(sQuery3);
+      modelBindingObj.ajax(sQuery4);
       
       modelBindingObj.contentType = appJson;     
       modelBindingObj.ajax(sObj1);

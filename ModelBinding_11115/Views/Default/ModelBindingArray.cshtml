@@ -4,151 +4,92 @@
 <h2>ModelBindingArray</h2>
 
 <div class="text-center">
-    <form method="post" action="/Default/ModelBindingArray" id="Array">
-        <div>表單值(ModelBindingArray)</div>
-        Name<input id="MtxtInPutName1" name="data[0].Name" value="ASP"></>
-        Age<input id="MtxtInPutAge1" name="data[0].Age" type="number" value="12"></><br />
-        Name<input id="MtxtInPutName2" name="data[1].Name" value="Csharp"></>
-        Age<input id="MtxtInPutAge2" name="data[1].Age" type="number" value="23"></><br />
-        Name<input id="MtxtInPutName3" name="data[2].Name" value="Java"></>
-        Age<input id="MtxtInPutAge3" name="data[2].Age" type="number" value="34"></<br />
-    </form>
-    <div id="result"></div>
+  <form method="post" action="/Default/ModelBindingArray" id="Array">
+    <div>表單值(ModelBindingArray)</div>
+    Name<input id="MtxtInPutName1" name="data[0].Name" value="ASP"></>
+    Age<input id="MtxtInPutAge1" name="data[0].Age" type="number" value="12"></><br />
+    Name<input id="MtxtInPutName2" name="data[1].Name" value="Csharp"></>
+    Age<input id="MtxtInPutAge2" name="data[1].Age" type="number" value="23"></><br />
+    Name<input id="MtxtInPutName3" name="data[2].Name" value="Java"></>
+    Age<input id="MtxtInPutAge3" name="data[2].Age" type="number" value="34"></<br />
+  </form>
+  <div id="result"></div>
 </div>
-<div class=" form-inline" id="allcontent">
-    <div class="form-group form-group-lg">
-        <label for="dataBinding">資料繫結方式</label>
-        <br />
-        @Html.DropDownList("dataBinding", new List<SelectListItem>() {
-                    new SelectListItem(){ Value = "SimpleBinding", Text = "SimpleBinding"},
-                    new SelectListItem(){ Value = "ModelBindObj", Text = "ModelBindObj" },
-                    new SelectListItem(){ Value = "SimpleModelBindArray", Text = "SimpleModelBindArray" },
-                    new SelectListItem(){ Value = "ModelBindingArray", Text = "ModelBindingArray" },
-                    new SelectListItem(){ Value = "ModelBindingNestedObj", Text = "ModelBindingNestedObj" },
-                    new SelectListItem(){ Value = "ModelBindingArrayNestedObj", Text = "ModelBindingArrayNestedObj" }
-                })
-    </div>
-    @*<div class="form-group form-group-lg ">
-            <label for="method">傳遞方法</label>
-            <br />
-            @Html.DropDownList("method", new List<SelectListItem>() {
-                     new SelectListItem(){ Value = "post", Text = "POST" },
-                     new SelectListItem(){ Value = "get", Text = "GET" },
-                    })
-        </div>*@
-    <div class="form-group form-group-lg">
-        <label for="contentType">內容類型</label>
-        <br />
-        @Html.DropDownList("contentType", new List<SelectListItem>() {
-                    new SelectListItem(){ Value = "application/x-www-form-urlencoded; charset=utf-8", Text = "application/x-www-form-urlencoded; charset=utf-8"},
-                    new SelectListItem(){ Value = "application/json; charset=utf-8", Text = "application/json; charset=utf-8" }
-                })
-    </div>
-    <div class="form-group form-group-lg">
-        <label for="dataType">接收資料類型</label>
-        <br />
-        @Html.DropDownList("dataType", new List<SelectListItem>() {
-                    new SelectListItem(){ Value = "text", Text = "text "},
-                    new SelectListItem(){ Value = "json", Text = "json" },
-                    new SelectListItem(){ Value = "xml", Text = "xml" },
-                    new SelectListItem(){ Value = "html", Text = "html" },
-                    new SelectListItem(){ Value = "script", Text = "script" }
-                })
-    </div>
-    <div class="form-group form-group-lg">
-        <label for=""></label>
-        <br /><button id="btnSubmit" class="btn btn-primary">送出</button>
-    </div>
-</div>
-<table class="table" id="tableMain">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">序號</th>
-            <th scope="col"> 資料繫結方式</th>
-            <th scope="col">輸入內容</th>
-            <th scope="col">內容類型</th>
-            <th scope="col">送出內容</th>
-            @*<th scope="col">URL編碼</th>*@
-            <th scope="col">傳回內容</th>
-
-        </tr>
-    </thead>
-</table>
 @section Scripts{
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.10.3/beautify.js"></script>
-    <script src="~/Content/site.js"></script>
-    <script>
-        $(function () {
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.10.3/beautify.js"></script>
+  <script src="~/Content/site.js"></script>
+  <script>
+    $(function () {
 
-            //jQuery 的 Ajax，若指定dataType，Server Response的資料必須為該型別，否則回報轉型失敗
-            //只要與Action的參數對應，只有一種可能性，就不用指名
-            //只有在Action的Array、List參數內是簡單型別，免加索引
-
-
-            let action_ModelBindingArray = { tag: "(Human[] data)", url: "/Default/ModelBindingArray", dataType: "json", contentType: appUrlencoded };
+      //jQuery 的 Ajax，若指定dataType，Server Response的資料必須為該型別，否則回報轉型失敗
+      //只要與Action的參數對應，只有一種可能性，就不用指名
+      //只有在Action的Array、List參數內是簡單型別，免加索引
 
 
-            //#region 集合複雜型別繫結
-            let modelBindingArray = factory(action_ModelBindingArray);
-            var sObj1 = [{ Name: $("#MtxtInPutName1").val(), Age: $("#MtxtInPutAge1").val() },
+      let action_ModelBindingArray = { tag: "(Human[] data)", url: "/Default/ModelBindingArray", dataType: "json", contentType: appUrlencoded };
+
+
+      //#region 集合複雜型別繫結
+      let modelBindingArray = factory(action_ModelBindingArray);
+      var sObj1 = [{ Name: $("#MtxtInPutName1").val(), Age: $("#MtxtInPutAge1").val() },
+      { Name: $("#MtxtInPutName2").val(), Age: $("#MtxtInPutAge2").val() },
+      { Name: $("#MtxtInPutName3").val(), Age: $("#MtxtInPutAge3").val() }]
+
+      var sObj2 = { data: sObj1 };
+      var sObj3 = [new jqdata($("#MtxtInPutName1").val(), $("#MtxtInPutAge1").val()), new jqdata($("#MtxtInPutName2").val(), $("#MtxtInPutAge2").val()), new jqdata($("#MtxtInPutName3").val(), $("#MtxtInPutAge3").val())]
+      var sObj4 = { data: sObj3 };
+      var sObj5 = {
+        "[0]":
+          { Name: $("#MtxtInPutName1").val(), Age: $("#MtxtInPutAge1").val() },
+        "[1]":
+          { Name: $("#MtxtInPutName2").val(), Age: $("#MtxtInPutAge2").val() },
+        "[2]":
+          { Name: $("#MtxtInPutName3").val(), Age: $("#MtxtInPutAge3").val() }
+      };
+      var sObj6 = {
+        data: {
+          "0":
+            { Name: $("#MtxtInPutName1").val(), Age: $("#MtxtInPutAge1").val() },
+          "1":
             { Name: $("#MtxtInPutName2").val(), Age: $("#MtxtInPutAge2").val() },
-            { Name: $("#MtxtInPutName3").val(), Age: $("#MtxtInPutAge3").val() }]
+          "2":
+            { Name: $("#MtxtInPutName3").val(), Age: $("#MtxtInPutAge3").val() }
+        }
+      };
 
-            var sObj2 = { data: sObj1 };
-            var sObj3 = [new jqdata($("#MtxtInPutName1").val(), $("#MtxtInPutAge1").val()), new jqdata($("#MtxtInPutName2").val(), $("#MtxtInPutAge2").val()), new jqdata($("#MtxtInPutName3").val(), $("#MtxtInPutAge3").val())]
-            var sObj4 = { data: sObj3 };
-            var sObj5 = {
-                "[0]":
-                    { Name: $("#MtxtInPutName1").val(), Age: $("#MtxtInPutAge1").val() },
-                "[1]":
-                    { Name: $("#MtxtInPutName2").val(), Age: $("#MtxtInPutAge2").val() },
-                "[2]":
-                    { Name: $("#MtxtInPutName3").val(), Age: $("#MtxtInPutAge3").val() }
-            };
-            var sObj6 = {
-                data: {
-                    "0":
-                        { Name: $("#MtxtInPutName1").val(), Age: $("#MtxtInPutAge1").val() },
-                    "1":
-                        { Name: $("#MtxtInPutName2").val(), Age: $("#MtxtInPutAge2").val() },
-                    "2":
-                        { Name: $("#MtxtInPutName3").val(), Age: $("#MtxtInPutAge3").val() }
-                }
-            };
+      var sQuery1 = $.param(sObj1);
+      var sQuery2 = $.param(sObj2);
+      var sQuery3 = $.param(sObj3);
+      var sQuery4 = $.param(sObj4);
+      var sQuery5 = $.param(sObj5);
+      var sQuery6 = $.param(sObj6);
+      var sObjArray1 = $('#Array').serializeArray();
+      //modelBindingArray.ajax(sObj1);      //不能丟不相符格式的Array
+      modelBindingArray.ajax(sObj2);
+      //modelBindingArray.ajax(sObj3);     //不能丟不相符格式的Array
+      modelBindingArray.ajax(sObj4);
+      modelBindingArray.ajax(sObj5);
+      modelBindingArray.ajax(sObj6);
+      modelBindingArray.ajax(sObjArray1);
+      // modelBindingArray.ajax(sQuery1);        //不能丟不相符格式的Array轉成者
+      modelBindingArray.ajax(sQuery2);
+      // modelBindingArray.ajax(sQuery3);    //不能丟不相符格式的Array轉成者
+      modelBindingArray.ajax(sQuery4);
+      modelBindingArray.ajax(sQuery5);
+      modelBindingArray.ajax(sQuery6);
 
-            var sQuery1 = $.param(sObj1);
-            var sQuery2 = $.param(sObj2);
-            var sQuery3 = $.param(sObj3);
-            var sQuery4 = $.param(sObj4);
-            var sQuery5 = $.param(sObj5);
-            var sQuery6 = $.param(sObj6);
-            var sObjArray1 = $('#Array').serializeArray();
-            //modelBindingArray.ajax(sObj1);      //不能丟不相符格式的Array
-            modelBindingArray.ajax(sObj2);
-            //modelBindingArray.ajax(sObj3);     //不能丟不相符格式的Array
-            modelBindingArray.ajax(sObj4);
-            modelBindingArray.ajax(sObj5);
-            modelBindingArray.ajax(sObj6);
-            modelBindingArray.ajax(sObjArray1);
-            // modelBindingArray.ajax(sQuery1);        //不能丟不相符格式的Array轉成者
-            modelBindingArray.ajax(sQuery2);
-            // modelBindingArray.ajax(sQuery3);    //不能丟不相符格式的Array轉成者
-            modelBindingArray.ajax(sQuery4);
-            modelBindingArray.ajax(sQuery5);
-            modelBindingArray.ajax(sQuery6);
+      modelBindingArray.contentType = appJson;
+      modelBindingArray.ajax(sObj1);      //不能丟不相符格式的Array
+      modelBindingArray.ajax(sObj2);
+      modelBindingArray.ajax(sObj3);     //不能丟不相符格式的Array
+      modelBindingArray.ajax(sObj4);
+      modelBindingArray.ajax(sObj5);
+      //  modelBindingArray.ajax(sObj6);    //失敗
 
-            modelBindingArray.contentType = appJson;
-            modelBindingArray.ajax(sObj1);      //不能丟不相符格式的Array
-            modelBindingArray.ajax(sObj2);
-            modelBindingArray.ajax(sObj3);     //不能丟不相符格式的Array
-            modelBindingArray.ajax(sObj4);
-            modelBindingArray.ajax(sObj5);
-            //  modelBindingArray.ajax(sObj6);    //失敗
-
-            //#endregion
+      //#endregion
 
 
-        });
+    });
 
-    </script>
+  </script>
 }

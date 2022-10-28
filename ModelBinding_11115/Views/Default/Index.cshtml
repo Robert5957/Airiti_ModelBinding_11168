@@ -5,13 +5,13 @@
 
 
 <form method="post" action="/Default/SimpleBinding" id="SimpleBindingForm">
-  <input id="SimpleBindingSubmmit" type="submit" value="SimpleBinding" />  <br />
+  @*<input id="SimpleBindingSubmmit" type="submit" value="SimpleBinding" />  <br />*@
   <div> 輸入(SimpleBinding)</div>
   Name<input id="txtInPutName" name="Name" value="Siri"></>
   Age<input id="txtInPutAge" name="Age" type="number" value="16"></><br />
 </form>
 <form method="post" action="/Default/ModelBindObj" id="ModelBindObjForm">
-  <input id="ModelBindObjSubmmit" type="submit" value="ModelBindObj" />  <br />
+  @*<input id="ModelBindObjSubmmit" type="submit" value="ModelBindObj" />  <br />*@
   <div> 輸入(ModelBindObj)</div>
   Name<input id="txtInPutMBName" name="Name" value="Siri"></>
   Age<input id="txtInPutMBAge" name="Age" type="number" value="16"></><br />
@@ -104,7 +104,7 @@
 <input id="ModelBindingArrayNestedObj" type="button" value="ModelBindingArrayNestedObj" />
 
 @section scripts{
-  @*<script>
+  <script>
     //#region Addtext
     function AddJsontext(text) {               //    返回(Jsontext)
       $('#txtPostBackJson').val(text);
@@ -651,5 +651,5 @@
       AjaxForm("/Default/ModelBindingArrayNestedObj", "json", sQuery6);
     })
                                           //#endregion
-  </script>*@
+  </script>
 }
