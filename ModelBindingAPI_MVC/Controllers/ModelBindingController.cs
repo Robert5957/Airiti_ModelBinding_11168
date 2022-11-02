@@ -13,31 +13,16 @@ namespace ModelBindingAPI_MVC.Controllers
         {
             return View();
         }
-        public ActionResult SimpleBinding()
-        {
-            return View();
-        }
-        [HttpPost]
         public ActionResult SimpleBinding(string Name, int Age)
         {
             try
             {
                  return Content(nameof(Name) + ":" + Name + ", " + nameof(Age) + ":" + Age); } catch (Exception ex) { return Content(ex.Message); }
         }
-        public ActionResult ModelBindObj()
-        {
-            return View();
-        }
-        [HttpPost]
         public ActionResult ModelBindObj(Human data)
         {
             if (data.Age != 0 && !string.IsNullOrEmpty(data.Name)) { return Json(data);} else {return Json("Null" );  }
         }
-        public ActionResult SimpleModelBindArray()
-        {
-            return View();
-        }
-        [HttpPost]
         public ActionResult SimpleModelBindArray(string[] Name, int[] Age)
         {        if (Name != null)
             {
@@ -90,29 +75,14 @@ namespace ModelBindingAPI_MVC.Controllers
             }
             else { return Content("ObjectNotExist"); }
         }
-        public ActionResult ModelBindingArray()
-        {
-            return View();
-        }
-        [HttpPost]
         public ActionResult ModelBindingArray(Human[] data)
         {
             return Json(data);
         }
-        public ActionResult ModelBindingNestedObj()
-        {
-            return View();
-        }
-        [HttpPost]
         public ActionResult ModelBindingNestedObj(Person data)
         {
             return Json(data);
         }
-        public ActionResult ModelBindingArrayNestedObj()
-        {
-            return View();
-        }
-        [HttpPost]
         public ActionResult ModelBindingArrayNestedObj(Person[] data)
         {
             return Json(data);

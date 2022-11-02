@@ -123,6 +123,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="2.BusinessLayer\HumanService.cs" />
+    <Compile Include="2.BusinessLayer\IHumanService.cs" />
+    <Compile Include="3.DataAccessLayer\HumanRespository.cs" />
+    <Compile Include="3.DataAccessLayer\IHumanRespository.cs" />
+    <Compile Include="4.ModelLayer\HumanModel.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -156,12 +161,19 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ModelBindingArrayController.cs" />
+    <Compile Include="Controllers\ModelBindingArrayNestedObjController.cs" />
     <Compile Include="Controllers\ModelBindingController.cs" />
+    <Compile Include="Controllers\ModelBindingNestedObjController.cs" />
+    <Compile Include="Controllers\ModelBindObjController.cs" />
+    <Compile Include="Controllers\SimpleBindingController.cs" />
+    <Compile Include="Controllers\SimpleModelBindArrayController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Human.cs" />
+    <Compile Include="Models\HumanAPI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +188,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="HtmlPage1.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -267,8 +280,11 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\ModelBinding\Index.cshtml" />
     <Content Include="Views\ModelBinding\FileUpload.cshtml" />
+    <Content Include="Views\Home\API.cshtml" />
+    <Content Include="Views\Home\APIModelBinding.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="5.CrossCuttingLayer\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>

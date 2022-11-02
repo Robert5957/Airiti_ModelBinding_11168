@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Product App</title>
+</head>
+<body>
+    <div class="row container-fluid">
+        <div class="col-md-4">
+            <h2>All Products</h2>
+            <ul id="products" />
+        </div>
+        <div class="col-md-4 ">
+            <h2>Search by ID</h2>
+            <input type="text" id="prodId" size="5" />
+            <input type="button" value="Search" onclick="find();" />
+            <p id="product" />
+        </div>
+        <div class="col-md-4">
+            <button id="btnSubmit" type="submit">submit</button>
+
+        </div>
+    </div>
+
+    @section Scripts{
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.10.3/beautify.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script>
+            var uri = '/api/Values';
+            $('#btnSubmit').click(() => {
+                $.getJSON(uri)
+                    .done(function (data) {
+                        alert(data);
+                        // On success, 'data' contains a list of products.
+                        $.each(data, function (key, item) {
+                            // Add a list item for the product.
+                            $('<li>', { text: formatItem(item) }).appendTo($('#products'));
+                        });
+                    });
+            }
+            );
+            function formatItem(item) {
+                return "Id:"+ item.id + 'Name:' + item.Name + 'Age: ' + item.Age;
+            }
+            function find() {
+                var id = $('#prodId').val();
+                $.getJSON(uri + '/' + id)
+                    .done(function (data) {
+                        alert(data);
+                        $('#product').text(formatItem(data));
+                    })
+                    .fail(function (jqXHR, textStatus, err) {
+                        $('#product').text('Error: ' + err);
+                    });
+            }
+        </script>
+    }
+</body>
+</html>

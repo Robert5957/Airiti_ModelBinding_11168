@@ -29,6 +29,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelBindingAPI_MVC", "Mode
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelBinding_11115", "ModelBinding_11115\ModelBinding_11115.csproj", "{5883149A-D2D4-4B44-8CFD-3E57CB8E7E63}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.BusinessLogicLayer", "2.BusinessLogicLayer", "{34DEC67D-297E-4C3D-9C9F-821423279A87}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.DataAccessLayer", "3.DataAccessLayer", "{91966A5D-F007-414F-A3B4-1F6501E7D267}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.ModelLayer", "4.ModelLayer", "{641F824F-BC7D-472C-AA1C-9E694897B96E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.CrossCuttingLayer", "5.CrossCuttingLayer", "{77958200-871D-473D-BC69-FB57BC95B436}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.PresentationLayer", "1.PresentationLayer", "{7F5A8F6D-A1E4-455C-AB16-EF7C240286BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

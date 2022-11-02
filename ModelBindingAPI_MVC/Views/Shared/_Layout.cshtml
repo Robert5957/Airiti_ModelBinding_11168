@@ -34,8 +34,10 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("MVC", "Index", "ModelBinding", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("MVC_ModelBinding", "Index", "ModelBinding", new { area = "" }, null)</li>
+                    @*<li>@Html.ActionLink("API", "API", "Home", new { area = "" }, null)</li>*@
+                    <li>@Html.ActionLink("API_ModelBinding", "APIModelBinding", "Home", new { area = "" }, null)</li>
+
                     <li>@Html.ActionLink("FileUpload", "FileUpload", "ModelBinding", new { area = "" }, null)</li>
                 </ul>
             </div>

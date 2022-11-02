@@ -4,27 +4,39 @@
         table-layout: fixed;
         overflow: scroll;
     }
+
     td {
         overflow-wrap: break-word;
         margin: 0;
         padding: 0;
     }
+
     html, body {
         font: 13px/18px sans-serif;
+        background-color:aquamarine;
     }
+
     .select2-container {
         width: 100% !important;
     }
+
         .select2-container .select2-selection--single {
             height: 35px !important;
             color: red;
-            font-size: 1.5em;
+            font-size: 1.2em;
         }
 </style>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 <div class=" form-inline" id="allcontent">
-    <div class="form-group form-group-lg" style="width:40%">
+      @*<div class="form-group form-group-lg" style="width:10%">
+        @Html.DropDownList("Method", new List<SelectListItem>() {
+                    new SelectListItem(){ Value = "POST", Text = "POST"},
+                    new SelectListItem(){ Value = "GET", Text = "GET" },
+
+                })
+    </div>*@
+    <div class="form-group form-group-lg" style="width:35%">
         @Html.DropDownList("dataBinding", new List<SelectListItem>() {
                     new SelectListItem(){ Value = "SimpleBinding", Text = "SimpleBinding : string Name, int Age"},
                     new SelectListItem(){ Value = "ModelBindObj", Text = "ModelBindObj : Human data" },
@@ -34,7 +46,7 @@
                     new SelectListItem(){ Value = "ModelBindingArrayNestedObj", Text = "ModelBindingArrayNestedObj  Person[] data" }
                 })
     </div>
-    <div class="form-group form-group-lg" style="width:40%">
+    <div class="form-group form-group-lg" style="width:35%">
         @Html.DropDownList("contentType", new List<SelectListItem>() {
                     new SelectListItem(){ Value = "application/x-www-form-urlencoded", Text = "application/x-www-form-urlencoded"},
                     new SelectListItem(){ Value = "application/json", Text = "application/json" },
@@ -56,8 +68,10 @@
             <th scope="col" width="20%">輸入內容</th>
             <th scope="col" width="10%">ContentType</th>
             <th scope="col" width="20%">送出內容</th>
-            <th scope="col" width="20%">（URL encoding）Decoded
-            or JSONBeautify</th>
+            <th scope="col" width="20%">
+                （URL encoding）Decoded
+                or JSONBeautify
+            </th>
 
             @*<th scope="col">URL編碼</th>*@
             <th scope="col" width="20%">傳回內容(ResponText)</th>
@@ -69,7 +83,11 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         // using Select-2 for dropdownList
-           $(document).ready(function () {
+        $(document).ready(function () {
+            $('#Method').prepend('<option selected=""></option>').select2({
+                placeholder: "請選擇方法 ",
+                allowClear: true
+            });
             $('#dataBinding').prepend('<option selected=""></option>').select2({
                 placeholder: "請選擇資料繫結方式",
                 allowClear: true
@@ -119,7 +137,7 @@
             }
             $.ajax({
                 url: obj.url,
-                method: 'POST',
+                type:"POST",
                 contentType: obj.contentType + "; charset=UTF-8",
                 data: sendData,
                 dataType: obj.dataType,
@@ -169,7 +187,6 @@
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     $('#tableMain').append(Alerts + '<td style="font-size: 20px; color: green;" > status code:' + jqXHR.status+"  " + errorThrown + '</td>');
-                    console.log('reer');
                 },
                 complete: function () {
                     obj.id++;
@@ -177,6 +194,7 @@
             });
         }
         function modelBinding() {
+            //var method = document.getElementById("Method").value;
             var actionName = document.getElementById("dataBinding").value;
             var appUrlencoded = document.getElementById('contentType').value;
             var varJsonObject =
@@ -324,7 +342,7 @@
                     actionStyle = "Person[] data";
                     break;
             }
-            let action_modelBinding = { tag: actionStyle, url: "/ModelBinding/" + actionName, dataType: "text", contentType: appUrlencoded };
+            let action_modelBinding = { tag: actionStyle, url: "/api/"+actionName,dataType: "text", contentType: appUrlencoded };
             switch (appUrlencoded) {
                 case "application/x-www-form-urlencoded":
                     contentTypeSel(variables, actionName, action_modelBinding);
@@ -333,9 +351,9 @@
                     contentTypeSel(varJsonObject, actionName, action_modelBinding);
                     break;
                 case "Both":
-                    action_modelBinding = { tag: actionStyle, url: "/ModelBinding/" + actionName, dataType: "text", contentType: "application/x-www-form-urlencoded" };
+                    action_modelBinding = { tag: actionStyle, url: "/api/" + actionName,  dataType: "text", contentType: "application/x-www-form-urlencoded" };
                     contentTypeSel(variables, actionName, action_modelBinding);
-                     action_modelBinding = { tag: actionStyle, url: "/ModelBinding/" + actionName, dataType: "text", contentType: "application/json" };
+                    action_modelBinding = { tag: actionStyle, url: "/api/" + actionName, dataType: "text", contentType: "application/json" };
                     contentTypeSel(varJsonObject, actionName, action_modelBinding);
                     break;
             }
@@ -349,11 +367,8 @@
                             modelBinding.ajax(object);
                         })
                     }
-
                 }
             } $('#tableMain').append('<td >End</td>');
 };
     </script>
 }
-
-

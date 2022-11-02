@@ -14,5 +14,10 @@ namespace ModelBindingAPI_MVC.Controllers
 
             return View();
         }
+        public ActionResult API() {
+            return View();
+        }
+        public ActionResult APIModelBinding() { 
+        return View();}
     }
 }
