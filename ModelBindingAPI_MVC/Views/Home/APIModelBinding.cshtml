@@ -38,12 +38,12 @@
     </div>*@
     <div class="form-group form-group-lg" style="width:35%">
         @Html.DropDownList("dataBinding", new List<SelectListItem>() {
-                    new SelectListItem(){ Value = "SimpleBinding", Text = "SimpleBinding : string Name, int Age"},
-                    new SelectListItem(){ Value = "ModelBindObj", Text = "ModelBindObj : Human data" },
-                    new SelectListItem(){ Value = "SimpleModelBindArray", Text = "SimpleModelBindArray :string[] Name, int[] Age" },
-                    new SelectListItem(){ Value = "ModelBindingArray", Text = "ModelBindingArray :  Human[] data" },
-                    new SelectListItem(){ Value = "ModelBindingNestedObj", Text = "ModelBindingNestedObj :Person data" },
-                    new SelectListItem(){ Value = "ModelBindingArrayNestedObj", Text = "ModelBindingArrayNestedObj  Person[] data" }
+                    new SelectListItem(){ Value = "SimpleBinding", Text = "SimpleBinding(string Name, int Age)"},
+                    new SelectListItem(){ Value = "ModelBindObj", Text = "ModelBindObj(Human data)" },
+                    new SelectListItem(){ Value = "SimpleModelBindArray", Text = "SimpleModelBindArray (string[] Name, int[] Age)" },
+                    new SelectListItem(){ Value = "ModelBindingArray", Text = "ModelBindingArray(Human[] data)" },
+                    new SelectListItem(){ Value = "ModelBindingNestedObj", Text = "ModelBindingNestedObj (Person data)" },
+                    new SelectListItem(){ Value = "ModelBindingArrayNestedObj", Text = "ModelBindingArrayNestedObj(Person[] data)" }
                 })
     </div>
     <div class="form-group form-group-lg" style="width:35%">

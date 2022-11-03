@@ -1,40 +1,60 @@
 ﻿<style>
+    html, body {
+        font: 14px/18px sans-serif;
+        background-color:antiquewhite;
+    }
     table {
         width: 100%;
         table-layout: fixed;
         overflow: scroll;
     }
-    td {
-        overflow-wrap: break-word;
-        margin: 0;
-        padding: 0;
-    }
-    html, body {
-        font: 13px/18px sans-serif;
+    tr, th {
+        border: 1px solid black;
+        text-align: center;
     }
     .select2-container {
         width: 100% !important;
     }
         .select2-container .select2-selection--single {
-            height: 35px !important;
-            color: red;
+            height: 30px !important;
             font-size: 1.5em;
-        }
+            color:red;
+            }
+   table tr:nth-child(odd) {
+        background-color: aquamarine;
+    }
+    table tr:nth-child(even) {
+        background-color: transparent;
+    }
+    td {
+        overflow-wrap: break-word;
+        margin: 0;
+        padding: 0;
+        border: 1px solid black;
+    }
+    textarea {
+        display: block;
+        border: none;
+        width: 99%;
+        resize: both;
+        min-height: 100px;
+        background-color: transparent;
+    }
 </style>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-<div class=" form-inline" id="allcontent">
-    <div class="form-group form-group-lg" style="width:40%">
+<div class=" form-inline " id="allcontent">
+    <div class="form-group form-group-lg" style="width:45%">
         @Html.DropDownList("dataBinding", new List<SelectListItem>() {
-                    new SelectListItem(){ Value = "SimpleBinding", Text = "SimpleBinding : string Name, int Age"},
-                    new SelectListItem(){ Value = "ModelBindObj", Text = "ModelBindObj : Human data" },
-                    new SelectListItem(){ Value = "SimpleModelBindArray", Text = "SimpleModelBindArray :string[] Name, int[] Age" },
-                    new SelectListItem(){ Value = "ModelBindingArray", Text = "ModelBindingArray :  Human[] data" },
-                    new SelectListItem(){ Value = "ModelBindingNestedObj", Text = "ModelBindingNestedObj :Person data" },
-                    new SelectListItem(){ Value = "ModelBindingArrayNestedObj", Text = "ModelBindingArrayNestedObj  Person[] data" }
+                    new SelectListItem(){ Value = "SimpleBinding", Text = "SimpleBinding(string Name, int Age)"},
+                    new SelectListItem(){ Value = "ModelBindObj", Text = "ModelBindObj(Human data)" },
+                    new SelectListItem(){ Value = "SimpleModelBindArray", Text = "SimpleModelBindArray(string[] Name, int[] Age)" },
+                    new SelectListItem(){ Value = "ModelBindingArray", Text = "ModelBindingArray (Human[] data)" },
+                    new SelectListItem(){ Value = "ModelBindingNestedObj", Text = "ModelBindingNestedObj (Person data)" },
+                    new SelectListItem(){ Value = "ModelBindingArrayNestedObj", Text = "ModelBindingArrayNestedObj(Person[] data)" }
                 })
     </div>
-    <div class="form-group form-group-lg" style="width:40%">
+    <div class="form-group form-group-lg" style="width:45%">
         @Html.DropDownList("contentType", new List<SelectListItem>() {
                     new SelectListItem(){ Value = "application/x-www-form-urlencoded", Text = "application/x-www-form-urlencoded"},
                     new SelectListItem(){ Value = "application/json", Text = "application/json" },
@@ -42,26 +62,25 @@
 
                 })
     </div>
-    <div class="form-group form-group-lg" style="width:10%">
+    <div class="form-group form-group-lg" style="width:5%">
         <label for=""></label>
         <button id="btnSubmit" class="btn btn-primary">送出</button>
     </div>
 </div>
-<hr />
+<br />
 <table class="table table-striped" id="tableMain">
     <thead class="thead-dark">
-        <tr>
-            <th scope="col" width="4%">序號</th>
+        <tr >
+            <th scope="col" width="4%" >序號</th>
             <th scope="col" width="10%">繫結的資料型態</th>
             <th scope="col" width="20%">輸入內容</th>
             <th scope="col" width="10%">ContentType</th>
             <th scope="col" width="20%">送出內容</th>
             <th scope="col" width="20%">（URL encoding）Decoded
             or JSONBeautify</th>
-
-            @*<th scope="col">URL編碼</th>*@
             <th scope="col" width="20%">傳回內容(ResponText)</th>
         </tr>
+        <tr></tr>
     </thead>
 </table>
 @section Scripts{
@@ -89,93 +108,6 @@
             this.age = age
             this.Friends = friends || null
         }
-        function factory(action) {
-            let obj =
-            {
-                tag: action.tag,
-                url: action.url,
-                dataType: action.dataType,
-                id: 1,
-                contentType: action.contentType,
-                ajax: (data, status) => {
-                    Ajax(obj, data, status);
-                }
-            };
-            return obj;
-        };
-        function Ajax(obj, inputData) {
-            let sendData, Alerts,
-                inputType = typeof (inputData);
-            switch (obj.contentType) {
-                case "application/x-www-form-urlencoded":
-                    obj.processData = true;//讓jQuery協助將各種格式轉成http內容的編碼
-                    sendData = inputData;
-                    break;
-                case "application/json":
-                    if (inputType == "object")
-                        obj.processData = true;
-                        sendData = JSON.stringify(inputData);
-                    break;
-            }
-            $.ajax({
-                url: obj.url,
-                method: 'POST',
-                contentType: obj.contentType + "; charset=UTF-8",
-                data: sendData,
-                dataType: obj.dataType,
-                processData: obj.processData,
-                async: false,
-                beforeSend: function (jqXHR, settings) {
-                    let dataTxt = "";
-                    switch (inputType) {
-                        case "object":
-                            dataTxt = js_beautify(JSON.stringify(inputData));
-                            break;
-                        case "string":
-                            dataTxt = inputData;
-                            break;
-                    }
-                    Alerts = ' <tbody>' +
-                        '<tr>' +
-                        '  <td>' + obj.id + '</td>' +
-                        '  <td>' + obj.tag + '</td>' +
-                        '   <td>' + dataTxt + '</td>' +
-                        '   <td>' + obj.contentType + '</td>' +
-                        '   <td>' + settings.data + '</td>';
-                    if (obj.contentType === "application/x-www-form-urlencoded") {
-
-                        Alerts +=
-                            '<td>' + settings.data.replace(/%5B/g, "[").replace(/%5D/g, "]").replace(/&/g, "\n") + '</td>';
-                    } else if (obj.contentType == "application/json") {
-                        Alerts +=
-                            '<td>' + js_beautify(settings.data) + '</td>';
-                    }
-                },
-
-                success: function (result, textStatus, jqXHR) {
-                    if (jqXHR.responseText == "" || jqXHR.responseText.includes("Null")) {
-                        $('#tableMain').append(Alerts + '<td style="font-size: 20px; color: red;" ><strong>' + 'Fail !' + '</strong></td>');
-                    } else if (jqXHR.responseText.includes("ObjectNotExist")) { $('#tableMain').append(Alerts + '<td style=" color: blue;" ><strong>' + jqXHR.responseText + '</strong></td>');}
-                    else {
-                        switch (typeof (result)) {
-                            case "object":
-                                result = js_beautify(JSON.stringify(result));
-                                break;
-                            case "string":
-                                break;
-                        }
-                        $('#tableMain').append(Alerts+ '<td>' + result + '</td>');
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    $('#tableMain').append(Alerts + '<td style="font-size: 20px; color: green;" > status code:' + jqXHR.status+"  " + errorThrown + '</td>');
-                    console.log('reer');
-                },
-                complete: function () {
-                    obj.id++;
-                }
-            });
-        }
         function modelBinding() {
             var actionName = document.getElementById("dataBinding").value;
             var appUrlencoded = document.getElementById('contentType').value;
@@ -184,7 +116,7 @@
                 SimpleBinding: [
                     { Name: "Gina_Object", Age: 11 }
                     , 'Name=Gina_$.param(Gina_Object)&Age=11', [{ "name": "Name", "value": "Alex_FormSerializeArray" }
-                    , { "name": "Age", "value": "12" }], new jqdata("Judy", 13)
+                        , { "name": "Age", "value": "12" }], new jqdata("Judy", 13)
                 ]
 
                 , ModelBindObj: [
@@ -218,7 +150,7 @@
 
                 , ModelBindingArrayNestedObj: [
                     [{ Name: "Gina", Age: 61, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] }]
-                    ,{ data: [{ Name: "Gina61_data", Age: 61, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] }] }
+                    , { data: [{ Name: "Gina61_data", Age: 61, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] }] }
                     , [new jqdata('Gina', 62, [new jqdata('Ivy', 2)]), new jqdata('Fanny', 23, [new jqdata('Eva', 2)])]
                     , { data: [new jqdata('Gina62_data', 62, [new jqdata('Ivy', 2)]), new jqdata('Fanny', 23, [new jqdata('Eva', 2)])] }
                     , [{ "Name": "Gina", "Age": "63", "Friends": [{ "Name": "Coco", "Age": "2", "Friends": [{ "Name": "David", "Age": "3" }] }, { "Name": "Eve", "Age": "4" }] }, { "Name": "Bob", "Age": "5", "Friends": [{ "Name": "Frank", "Age": "6", "Friends": [{ "Name": "Gino", "Age": "7" }] }, { "Name": "Hank", "Age": "8" }] }]
@@ -260,7 +192,7 @@
                 ]
 
                 , ModelBindingArray: [
-                    {"data": [{ "Name": "ASP", "Age": "12" }, { "Name": "Csharp", "Age": "23" }, { "Name": "Java", "Age": "34" }]}
+                    { "data": [{ "Name": "ASP", "Age": "12" }, { "Name": "Csharp", "Age": "23" }, { "Name": "Java", "Age": "34" }] }
                     , 'data%5B0%5D%5BName%5D=ASP_$.param(ASP)&data%5B0%5D%5BAge%5D=12&data%5B1%5D%5BName%5D=Csharp&data%5B1%5D%5BAge%5D=23&data%5B2%5D%5BName%5D=Java&data%5B2%5D%5BAge%5D=34'
                     , [{ Name: "Gina", Age: 42 }, { Name: "Tom", Age: 1 }]
                     , { "data": [{ "name": "ASP", "age": "12", "Friends": null }, { "name": "Csharp", "age": "23", "Friends": null }, { "name": "Java", "age": "34", "Friends": null }] }
@@ -299,9 +231,9 @@
                     , { "data[0]": { Name: "Gina", Age: 64, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, "data[1]": { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] } }
                     , { "[0]": { Name: "Gina", Age: 65, Friends: [{ Name: "Nana", Age: 0, Friends: [{ Name: "Ivy", Age: 3 }] }] }, "[1]": { Name: "Fanny", Age: 5, Friends: [{ Name: "Tina", Age: 0, Friends: [{ Name: "Chris", Age: 3 }] }] } }
                     , { "[0]": { "Name": "Gina", "Age": "66", "Friends[0]": { "Name": "Coco", "Age": "2", "Friends[0]": { "Name": "David", "Age": "3" } }, "Friends[1]": { "Name": "Eve", "Age": "4" } }, "[1]": { "Name": "Bob", "Age": "5", "Friends[0]": { "Name": "Frank", "Age": "6", "Friends[0]": { "Name": "Gino", "Age": "7" } }, "Friends[1]": { "Name": "Hank", "Age": "8" } } }
-                    ,'data%5B0%5D%5Bname%5D=Gina_$.param(Gina66)&data%5B0%5D%5Bage%5D=1&data%5B0%5D%5BFriends%5D%5B0%5D%5Bname%5D=Coco&data%5B0%5D%5BFriends%5D%5B0%5D%5Bage%5D=2&data%5B0%5D%5BFriends%5D%5B0%5D%5BFriends%5D%5B0%5D%5Bname%5D=David&data%5B0%5D%5BFriends%5D%5B0%5D%5BFriends%5D%5B0%5D%5Bage%5D=3&data%5B0%5D%5BFriends%5D%5B0%5D%5BFriends%5D%5B0%5D%5BFriends%5D=&data%5B0%5D%5BFriends%5D%5B1%5D%5Bname%5D=Eve&data%5B0%5D%5BFriends%5D%5B1%5D%5Bage%5D=4&data%5B0%5D%5BFriends%5D%5B1%5D%5BFriends%5D=&data%5B1%5D%5Bname%5D=Bob&data%5B1%5D%5Bage%5D=5&data%5B1%5D%5BFriends%5D%5B0%5D%5Bname%5D=Frank&data%5B1%5D%5BFriends%5D%5B0%5D%5Bage%5D=6&data%5B1%5D%5BFriends%5D%5B0%5D%5BFriends%5D%5B0%5D%5Bname%5D=Gino&data%5B1%5D%5BFriends%5D%5B0%5D%5BFriends%5D%5B0%5D%5Bage%5D=7&data%5B1%5D%5BFriends%5D%5B0%5D%5BFriends%5D%5B0%5D%5BFriends%5D=&data%5B1%5D%5BFriends%5D%5B1%5D%5Bname%5D=Hank&data%5B1%5D%5BFriends%5D%5B1%5D%5Bage%5D=8&data%5B1%5D%5BFriends%5D%5B1%5D%5BFriends%5D='
+                    , 'data%5B0%5D%5Bname%5D=Gina_$.param(Gina66)&data%5B0%5D%5Bage%5D=1&data%5B0%5D%5BFriends%5D%5B0%5D%5Bname%5D=Coco&data%5B0%5D%5BFriends%5D%5B0%5D%5Bage%5D=2&data%5B0%5D%5BFriends%5D%5B0%5D%5BFriends%5D%5B0%5D%5Bname%5D=David&data%5B0%5D%5BFriends%5D%5B0%5D%5BFriends%5D%5B0%5D%5Bage%5D=3&data%5B0%5D%5BFriends%5D%5B0%5D%5BFriends%5D%5B0%5D%5BFriends%5D=&data%5B0%5D%5BFriends%5D%5B1%5D%5Bname%5D=Eve&data%5B0%5D%5BFriends%5D%5B1%5D%5Bage%5D=4&data%5B0%5D%5BFriends%5D%5B1%5D%5BFriends%5D=&data%5B1%5D%5Bname%5D=Bob&data%5B1%5D%5Bage%5D=5&data%5B1%5D%5BFriends%5D%5B0%5D%5Bname%5D=Frank&data%5B1%5D%5BFriends%5D%5B0%5D%5Bage%5D=6&data%5B1%5D%5BFriends%5D%5B0%5D%5BFriends%5D%5B0%5D%5Bname%5D=Gino&data%5B1%5D%5BFriends%5D%5B0%5D%5BFriends%5D%5B0%5D%5Bage%5D=7&data%5B1%5D%5BFriends%5D%5B0%5D%5BFriends%5D%5B0%5D%5BFriends%5D=&data%5B1%5D%5BFriends%5D%5B1%5D%5Bname%5D=Hank&data%5B1%5D%5BFriends%5D%5B1%5D%5Bage%5D=8&data%5B1%5D%5BFriends%5D%5B1%5D%5BFriends%5D='
                     , [{ "name": "data[0].Name", "value": "Gina66_serializeArrayForm" }, { "name": "data[0].Age", "value": "1" }, { "name": "data[0].Friends[0].Name", "value": "Coco" }, { "name": "data[0].Friends[0].Age", "value": "2" }, { "name": "data[0].Friends[0].Friends[0].Name", "value": "David" }, { "name": "data[0].Friends[0].Friends[0].Age", "value": "3" }, { "name": "data[0].Friends[1].Name", "value": "Eve" }, { "name": "data[0].Friends[1].Age", "value": "4" }, { "name": "data[1].Name", "value": "Bob" }, { "name": "data[1].Age", "value": "5" }, { "name": "data[1].Friends[0].Name", "value": "Frank" }, { "name": "data[1].Friends[0].Age", "value": "6" }, { "name": "data[1].Friends[0].Friends[0].Name", "value": "Gino" }, { "name": "data[1].Friends[0].Friends[0].Age", "value": "7" }, { "name": "data[1].Friends[1].Name", "value": "Hank" }, { "name": "data[1].Friends[1].Age", "value": "8" }]
-]
+                ]
             }
             let actionStyle;
             switch (actionName) {
@@ -335,7 +267,7 @@
                 case "Both":
                     action_modelBinding = { tag: actionStyle, url: "/ModelBinding/" + actionName, dataType: "text", contentType: "application/x-www-form-urlencoded" };
                     contentTypeSel(variables, actionName, action_modelBinding);
-                     action_modelBinding = { tag: actionStyle, url: "/ModelBinding/" + actionName, dataType: "text", contentType: "application/json" };
+                    action_modelBinding = { tag: actionStyle, url: "/ModelBinding/" + actionName, dataType: "text", contentType: "application/json" };
                     contentTypeSel(varJsonObject, actionName, action_modelBinding);
                     break;
             }
@@ -351,8 +283,94 @@
                     }
 
                 }
-            } $('#tableMain').append('<td >End</td>');
-};
+            } $('#tableMain').append('<tr></tr>');$('#tableMain').append('<td style="border:none">End</td>');
+        };
+        function factory(action) {
+            let obj =
+            {
+                tag: action.tag,
+                url: action.url,
+                dataType: action.dataType,
+                id: 1,
+                contentType: action.contentType,
+                ajax: (data, status) => {
+                    Ajax(obj, data, status);
+                }
+            };
+            return obj;
+        };
+        function Ajax(obj, inputData) {
+            let sendData, Alerts,
+                inputType = typeof (inputData);
+            switch (obj.contentType) {
+                case "application/x-www-form-urlencoded":
+                    obj.processData = true;//讓jQuery協助將各種格式轉成http內容的編碼
+                    sendData = inputData;
+                    break;
+                case "application/json":
+                    if (inputType == "object")
+                        obj.processData = true;
+                    sendData = JSON.stringify(inputData);
+                    break;
+            }
+            $.ajax({
+                url: obj.url,
+                method: 'POST',
+                contentType: obj.contentType + "; charset=UTF-8",
+                data: sendData,
+                dataType: obj.dataType,
+                processData: obj.processData,
+                async: false,
+                beforeSend: function (jqXHR, settings) {
+                    let dataTxt = "";
+                    switch (inputType) {
+                        case "object":
+                            dataTxt = js_beautify(JSON.stringify(inputData));
+                            break;
+                        case "string":
+                            dataTxt = inputData;
+                            break;
+                    }
+                    Alerts =/* ' <tbody>' +*/
+                        '<tr>' +
+                        '  <td style="text-align:center;">' + obj.id + '</td>' +
+                        '  <td>' + obj.tag + '</td>' +
+                        '   <td>' + dataTxt + '</td>' +
+                        '   <td>' + obj.contentType + '</td>' +
+                        '   <td>' + settings.data + '</td>';
+                    if (obj.contentType === "application/x-www-form-urlencoded") {
+
+                        Alerts +=
+                            '<td><textarea style="color:blue">' + settings.data.replace(/%5B/g, "[").replace(/%5D/g, "]").replace(/&/g, "\n") + '</textarea></td>';
+                    } else if (obj.contentType == "application/json") {
+                        Alerts +=
+                            '<td><textarea style="color:red">' + js_beautify(settings.data) + '</textarea></td>';
+                    }
+                },
+
+                success: function (result, textStatus, jqXHR) {
+                    if (jqXHR.responseText == "" || jqXHR.responseText.includes("Null")) {
+                        $('#tableMain').append(Alerts + '<td style="font-size: 20px; color: red;" ><strong>' + 'Fail !' + '</strong></td>');
+                    } else if (jqXHR.responseText.includes("ObjectNotExist")) { $('#tableMain').append(Alerts + '<td style=" color: blue;" ><strong>' + jqXHR.responseText + '</strong></td>'); }
+                    else {
+                        switch (typeof (result)) {
+                            case "object":
+                                result = js_beautify(JSON.stringify(result));
+                                break;
+                            case "string":
+                                break;
+                        }
+                        $('#tableMain').append(Alerts + '<td>' + result + '</td>');
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $('#tableMain').append(Alerts + '<td style="font-size: 20px; color: green;" > status code:' + jqXHR.status + "  " + errorThrown + '</td></tr>');
+                },
+                complete: function () {
+                    obj.id++;
+                }
+            });
+        }
     </script>
 }
 
