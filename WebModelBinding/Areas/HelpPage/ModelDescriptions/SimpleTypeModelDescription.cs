@@ -1,6 +1,0 @@
-namespace WebModelBinding.Areas.HelpPage.ModelDescriptions
-{
-    public class SimpleTypeModelDescription : ModelDescription
-    {
-    }
-}
